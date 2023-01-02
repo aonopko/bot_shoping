@@ -1,6 +1,6 @@
-from sqlalchemy import String, Integer, Text, DateTime, Column
+from sqlalchemy import Integer, DateTime, Column
 
-from models.base import Base
+from db.base import Base
 
 class Admin(Base):
     __tablename__ = "administrators"
