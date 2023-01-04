@@ -24,17 +24,19 @@ async def main():
     async_sessionmaker = sessionmaker(
         engine, expire_on_commit=False, class_=AsyncSession
     )
+    logger.info("Підключення до БД")
     bot = Bot(config.bot.token, parse_mode="HTML")
     bot["db"] = async_sessionmaker
     dp = Dispatcher(bot)
-
+    logger.info("Підключення до БД2")
     try:
-        await dp.start_polling(allowed_updates=True)
+        await dp.start_polling()
+        logger.info("Бот пішов")
     finally:
         await dp.storage.close()
         await dp.storage.wait_closed()
         await bot.session.close()
-
+        logger.info("Бот Дойшов")
 
 try:
     asyncio.run(main())
