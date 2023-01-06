@@ -7,6 +7,11 @@ from sqlalchemy.orm import sessionmaker
 
 from config_loade import Config, load_config
 from db.base import Base
+from handlers.admin import register_admin
+
+
+def register_all_handlers(dp):
+    register_admin(dp)
 
 
 async def main():
@@ -29,6 +34,9 @@ async def main():
     bot["db"] = async_sessionmaker
     dp = Dispatcher(bot)
     logger.info("Підключення до БД2")
+
+    register_all_handlers(dp)
+
     try:
         await dp.start_polling()
         logger.info("Бот пішов")
@@ -38,7 +46,8 @@ async def main():
         await bot.session.close()
         logger.info("Бот Дойшов")
 
-try:
-    asyncio.run(main())
-except (KeyboardInterrupt, SystemExit):
-    logger.info("Bot stopped!")
+if __name__ == '__main__':
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logger.info("Bot stopped!")
