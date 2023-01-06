@@ -7,11 +7,11 @@ from sqlalchemy.orm import sessionmaker
 
 from config_loade import Config, load_config
 from db.base import Base
-from handlers.admin import register_admin
+from handlers.costumer import register_costumer
 
 
 def register_all_handlers(dp):
-    register_admin(dp)
+    register_costumer(dp)
 
 
 async def main():
