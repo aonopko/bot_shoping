@@ -36,7 +36,6 @@ async def main():
     logger.info("Підключення до БД2")
 
     register_all_handlers(dp)
-
     try:
         await dp.start_polling()
         logger.info("Бот пішов")
