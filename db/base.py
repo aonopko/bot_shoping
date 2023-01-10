@@ -1,10 +1,3 @@
-import os
-from dotenv import load_dotenv
+from sqlalchemy.orm import declarative_base
 
-#
-
-
-# async def create_connect():
-#     await db.set_bind(os.getenv("SQLALCHEMY_URL"))
-#     db.gino: GinoSchemaVisitor
-#     await db.
+Base = declarative_base()
