@@ -1,3 +1,4 @@
 from gino import Gino
 
-db = Gino()
+db_gino = Gino()
+
