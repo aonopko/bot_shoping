@@ -1,3 +1,3 @@
-from sqlalchemy.orm import declarative_base
+from gino import Gino
 
-Base = declarative_base()
+db = Gino()
