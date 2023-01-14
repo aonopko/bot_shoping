@@ -1,2 +1,2 @@
-# from __main__ import db_gino
-# from models.models import Admin, Employee
+from db.base import db_gino
+from models.admin_models import BSModel

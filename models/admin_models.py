@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-from base_models import BaseModel, TimedBaseModel
+from models.base_models import BaseModel, TimedBaseModel
 
 
 class BSModel(BaseModel):
