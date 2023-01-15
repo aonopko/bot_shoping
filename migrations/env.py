@@ -10,7 +10,7 @@ from db.core import db_gino
 
 config_env: Config = load_config()
 
-connect = f"postgresql://{config_env.db.user}:{config_env.db.password}@" \
+connect = f"postgresql://{config_env.db.user}:{config_env.db.password}@"\
           f"{config_env.db.host}/{config_env.db.db_name}"
 
 config = context.config
