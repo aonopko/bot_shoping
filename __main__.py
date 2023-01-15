@@ -18,9 +18,6 @@ async def main():
     dp = Dispatcher(bot)
     logger.info("Підключення до БД2")
 
-    await add_admin(123, "One")
-    logger.info("Добавлен Админ")
-
     try:
         await dp.start_polling()
         logger.info("Бот пішов")

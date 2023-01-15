@@ -1,4 +1,4 @@
-from models.admin_models import BSModel
+from models.db_models import BSModel
 
 
 async def add_admin(id: int, name: str):
