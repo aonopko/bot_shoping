@@ -14,11 +14,19 @@ class Customer(db_gino.Model):
 
 class Product(db_gino.Model):
     __tablename__ = "product"
-    id = Column(Integer, unique=True, primary_key=True)
+    product_id = Column(Integer, unique=True, primary_key=True)
     name = Column(String(50))
+    category = Column(String(50))
+    sub_category = Column(String(50))
     price = Column(Integer)
     quantity = Column(Integer)
     photo = Column(String(250))
+
+
+class Orders(db_gino.Model):
+    __tablename__ = "orders"
+    order_id = Column(Integer, unique=True, primary_key=True)
+
 
 
 
