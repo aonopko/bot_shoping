@@ -26,9 +26,12 @@ class Product(db_gino.Model):
 class Orders(db_gino.Model):
     __tablename__ = "orders"
     order_id = Column(Integer, unique=True, primary_key=True)
+    customer_id = Column(Integer, primary_key=True)
+    order_date = Column(DateTime)
 
 
-
-
-
-
+class OrderProducts(db_gino.Model):
+    __tablename__ = "order_products"
+    order_id = Column(Integer, primary_key=True)
+    product_id = Column(Integer, primary_key=True)
+    quantity = Column(Integer)
