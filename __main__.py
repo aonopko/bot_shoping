@@ -5,27 +5,26 @@ from aiogram import Bot, Dispatcher
 
 from config_loade import Config, load_config
 from db.base import db_gino
-from db.db_commands import add_admin
 
 
 async def main():
-    logger.info(f'Бот завантажується')
+    logger.info(f'Bot is loading')
     config: Config = load_config()
     await db_gino.set_bind(f"postgresql://{config.db.user}:{config.db.password}@"
                            f"{config.db.host}/{config.db.db_name}")
-    logger.info("Підключення до БД")
+    logger.info("Connect to BD")
     bot = Bot(config.bot.token, parse_mode="HTML")
     dp = Dispatcher(bot)
-    logger.info("Підключення до БД2")
+    logger.info("Bot is starting")
 
     try:
         await dp.start_polling()
-        logger.info("Бот пішов")
+        logger.info("Disconnect")
     finally:
         await dp.storage.close()
         await dp.storage.wait_closed()
         await bot.session.close()
-        logger.info("Бот Дойшов")
+        logger.info("Bot is off")
 
 if __name__ == '__main__':
     try:

@@ -1,5 +1,4 @@
 from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
 
 from db.base import db_gino
 
