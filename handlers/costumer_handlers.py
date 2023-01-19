@@ -1,7 +1,7 @@
-from aiogram import Dispatcher
 from aiogram.types import Message
+from aiogram import Dispatcher
 
-from keyboards.text_keyboard import main_menu, categories
+from keyboards.costumer_keyboard import main_menu, categories
 
 
 async def costumer_start(m: Message):

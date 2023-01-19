@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher
 
 from config_loade import Config, load_config
 from db.base import db_gino
+from handlers.costumer_handlers import register_costumer
 
 
 async def main():
@@ -16,6 +17,8 @@ async def main():
     bot = Bot(config.bot.token, parse_mode="HTML")
     dp = Dispatcher(bot)
     logger.info("Bot is starting")
+
+    register_costumer(dp)
 
     try:
         await dp.start_polling()
