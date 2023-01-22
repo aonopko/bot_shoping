@@ -1,7 +1,11 @@
-# from models.db_models import BSModel
-#
-#
-# async def add_admin(id: int, name: str):
-#     admin = BSModel(id=id, name=name)
-#     await admin.create()
+import asyncio
 
+from aiogram import types, Bot
+from sqlalchemy import sql
+from db.base import db_gino
+from models.db_models import Admins
+
+
+async def get_admin(idd):
+    admins = await Admins.query.where(Admins.id_telegram == idd).gino.first()
+    return admins
