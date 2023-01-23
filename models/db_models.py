@@ -9,7 +9,8 @@ class Admins(db_gino.Model):
     name = Column(String(55))
     query: sql.Select
 
-    __str__
+    def __str__(self):
+        return f'{self.id_telegram}, {self.name}'
 
 
 
