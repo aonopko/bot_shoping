@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from aiogram import Dispatcher
 from dataclasses import dataclass
 import os
 
@@ -10,6 +11,9 @@ load_dotenv()
 class Bot:
     token: str
 
+@dataclass
+class Dispatcher:
+    token: str
 
 @dataclass
 class DB:
@@ -23,12 +27,14 @@ class DB:
 class Config:
     bot: Bot
     db: DB
+    dp: Dispatcher
 
 
 def load_config():
     # Add some checks here?
     return Config(
         bot=Bot(token=os.getenv("BOT_TOKEN")),
+        dp=Dispatcher(token=os.getenv("BOT_TOKEN")),
         db=DB(
             host=os.getenv("DB_HOST"),
             db_name=os.getenv("DB_NAME"),
