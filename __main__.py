@@ -22,7 +22,7 @@ async def main():
 
     register_costumer_handlers(dp)
     register_admin_handlers(dp)
-
+    print(await get_admin(746943103))
 
     try:
         await dp.start_polling()

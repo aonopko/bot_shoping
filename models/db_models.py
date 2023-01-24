@@ -1,17 +1,14 @@
 from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
-from sqlalchemy import sql
+
 from db.base import db_gino
 
 
 class Admins(db_gino.Model):
     __tablename__ = "admins"
     id_telegram = Column(Integer, primary_key=True)
-    name = Column(String(55))
-    query: sql.Select
 
     def __str__(self):
-        return f'{self.id_telegram}, {self.name}'
-
+        return f'{self.id_telegram}'
 
 
 class Customer(db_gino.Model):
@@ -32,7 +29,6 @@ class Product(db_gino.Model):
     quantity = Column(Integer)
     photo = Column(String(250))
 
-    query: sql.Select
 
 class Order(db_gino.Model):
     __tablename__ = "orders"

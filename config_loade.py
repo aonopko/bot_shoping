@@ -4,6 +4,8 @@ import os
 
 
 load_dotenv()
+
+
 @dataclass
 class Bot:
     token: str
