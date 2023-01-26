@@ -1,19 +1,19 @@
 from dotenv import load_dotenv
-from aiogram import Dispatcher
 from dataclasses import dataclass
 import os
 
 
 load_dotenv()
 
-
 @dataclass
 class Bot:
     token: str
 
+
 @dataclass
 class Dispatcher:
     token: str
+
 
 @dataclass
 class DB:
