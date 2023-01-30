@@ -1,8 +1,4 @@
-import asyncio
 
-from aiogram import types, Bot
-from sqlalchemy import sql
-from db.base import db_gino
 from models.db_models import Admins
 
 

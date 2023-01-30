@@ -6,8 +6,8 @@ from aiogram import Bot, Dispatcher
 from config_loade import Config, load_config
 from db.base import db_gino
 from db.db_commands import get_admin
-# from handlers.costumer_handlers import register_costumer_handlers
-# from handlers.admin_handlers import register_admin_handlers
+from handlers.costumer_handlers import register_costumer_handlers
+from handlers.admin_handlers import register_admin_handlers
 
 
 async def main():
@@ -20,8 +20,10 @@ async def main():
     dp = Dispatcher(bot)
     logger.info("Bot is starting")
 
-    # register_costumer_handlers(dp)
-    # register_admin_handlers(dp)
+    register_costumer_handlers(dp)
+    register_admin_handlers(dp)
+
+
 
 
     try:

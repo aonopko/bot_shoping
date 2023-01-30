@@ -11,11 +11,6 @@ class Bot:
 
 
 @dataclass
-class Dispatcher:
-    token: str
-
-
-@dataclass
 class DB:
     host: str
     db_name: str
@@ -27,14 +22,13 @@ class DB:
 class Config:
     bot: Bot
     db: DB
-    dp: Dispatcher
+
 
 
 def load_config():
     # Add some checks here?
     return Config(
         bot=Bot(token=os.getenv("BOT_TOKEN")),
-        dp=Dispatcher(token=os.getenv("BOT_TOKEN")),
         db=DB(
             host=os.getenv("DB_HOST"),
             db_name=os.getenv("DB_NAME"),
