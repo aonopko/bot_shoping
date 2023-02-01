@@ -5,9 +5,11 @@ import os
 
 load_dotenv()
 
+
 @dataclass
 class Bot:
     token: str
+    use_redis: bool
 
 
 @dataclass
@@ -24,11 +26,11 @@ class Config:
     db: DB
 
 
-
 def load_config():
     # Add some checks here?
     return Config(
-        bot=Bot(token=os.getenv("BOT_TOKEN")),
+        bot=Bot(token=os.getenv("BOT_TOKEN"),
+                use_redis=bool(os.getenv("USE_REDIS"))),
         db=DB(
             host=os.getenv("DB_HOST"),
             db_name=os.getenv("DB_NAME"),
