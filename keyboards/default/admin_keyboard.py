@@ -18,6 +18,9 @@ update_product = ReplyKeyboardMarkup(
             KeyboardButton(text="Фото"),
             KeyboardButton(text="Ціну"),
             KeyboardButton(text="Кількість")
+        ],
+        [
+            KeyboardButton(text="Назад")
         ]
     ], resize_keyboard=True
 )
