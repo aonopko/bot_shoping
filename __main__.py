@@ -7,8 +7,8 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
 from config_loade import Config, load_config
 from db.base import db_gino
-from handlers.costumer_handlers import register_costumer_handlers
-from handlers.admin_handlers import register_admin_handlers
+from handlers.costumer_handlers.handler import register_costumer_handlers
+from handlers.admin_handlers.menu import register_admin_handlers
 
 
 async def main():
