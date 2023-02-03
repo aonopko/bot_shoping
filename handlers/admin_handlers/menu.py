@@ -6,7 +6,7 @@ from filters.bot_filter import CheckAdmin
 
 
 async def admin_check(m: Message):
-    await m.answer(text="Привіт Адмін",
+    await m.answer(text="Панель адміна",
                    reply_markup=admin_menu)
 
 
@@ -17,4 +17,4 @@ async def update_products(m: Message):
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_check, CheckAdmin(), commands=["admin"], state="*")
-    dp.register_message_handler(update_products, text=["Оновити товар"], state="*")
+    dp.register_message_handler(update_products, CheckAdmin(), text=["Оновити товар"], state="*")
