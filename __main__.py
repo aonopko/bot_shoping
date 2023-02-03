@@ -9,6 +9,8 @@ from config_loade import Config, load_config
 from db.base import db_gino
 from handlers.costumer_handlers.handler import register_costumer_handlers
 from handlers.admin_handlers.menu import register_admin_handlers
+from handlers.admin_handlers.add_product import register_add_product_handlers
+from filters.bot_filter import register_filters
 
 
 async def main():
@@ -24,6 +26,8 @@ async def main():
 
     register_costumer_handlers(dp)
     register_admin_handlers(dp)
+    register_add_product_handlers(dp)
+    register_filters(dp)
 
     try:
         await dp.start_polling()
