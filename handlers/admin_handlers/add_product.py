@@ -14,21 +14,88 @@ async def add_id(m: Message):
 
 async def load_id(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        data["id_product"] = int(m.text)
-    await AddProduct.next()
-    await m.answer("id завантажено")
-    await m.answer("Додайте назву товару")
+        try:
+            data["id_product"] = int(m.text)
+        except ValueError:
+            await m.answer("\U0001F69A  Потрібно ввести число")
+        else:
+            await AddProduct.next()
+            await m.answer("id завантажено")
+            await m.answer("Додайте назву товару")
 
 
 async def load_name(m: Message, state: FSMContext):
     async with state.proxy() as data:
         data["name"] = m.text
-    await m.answer("ім'я завантажено")
-    await m.answer(f"{data}")
+    await m.answer("Назву додано")
+    await AddProduct.next()
+    await m.answer("Додайте категорию товару")
+
+
+async def load_category(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        data["category"] = m.text
+        await m.answer("Категорію додано")
+        await AddProduct.next()
+        await m.answer("Додайте підкатегорію")
+
+
+async def load_sub_category(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        data["sub_category"] = m.text
+        await m.answer("ПідКатегорію додано")
+        await AddProduct.next()
+        await m.answer("Додайте ціну товара")
+
+
+async def load_price(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        try:
+            data["price"] = int(m.text)
+        except ValueError:
+            await m.answer("Потрібно ввести число")
+        else:
+            await m.answer("Ціну додано")
+            await AddProduct.next()
+            await m.answer("Додайте кількість товару")
+
+
+async def load_quantity(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        try:
+            data["quantity"] = int(m.text)
+        except ValueError:
+            await m.answer("Потрібно ввести число")
+        else:
+            await m.answer("Кількість додано")
+            await AddProduct.next()
+            await m.answer("Додайте фото товру")
+
+
+async def load_photo(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        data["photo"] = m.photo[0].file_id
+        await m.answer("фото додано")
+        await AddProduct.next()
+        await m.answer(f"{data}")
+
     await state.finish()
 
 
 def register_add_product_handlers(dp: Dispatcher):
-    dp.register_message_handler(add_id, CheckAdmin(), Text(equals=["Додати товар"], ignore_case="/"))
-    dp.register_message_handler(load_id, state=AddProduct.id_product)
-    dp.register_message_handler(load_name, state=AddProduct.name)
+    dp.register_message_handler(add_id, CheckAdmin(),
+                                Text(equals=["Додати товар"], ignore_case="/"))
+    dp.register_message_handler(load_id,
+                                state=AddProduct.id_product)
+    dp.register_message_handler(load_name,
+                                state=AddProduct.name)
+    dp.register_message_handler(load_category,
+                                state=AddProduct.category)
+    dp.register_message_handler(load_sub_category,
+                                state=AddProduct.sub_category)
+    dp.register_message_handler(load_price,
+                                state=AddProduct.price)
+    dp.register_message_handler(load_quantity,
+                                state=AddProduct.quantity)
+    dp.register_message_handler(load_photo, content_types=["photo"],
+                                state=AddProduct.photo)
