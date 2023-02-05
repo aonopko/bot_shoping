@@ -11,3 +11,5 @@ class AddProduct(StatesGroup):
     price = State()
     quantity = State()
     photo = State()
+    add_prod = State()
+    del_prod = State()
