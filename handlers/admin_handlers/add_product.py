@@ -88,7 +88,7 @@ async def load_photo(m: Message, state: FSMContext):
 
 def register_add_product_handlers(dp: Dispatcher):
     dp.register_message_handler(add_id, CheckAdmin(),
-                                Text(equals=["Додати товар"],
+                                Text(equals=["\U0001f4E6 Додати товар"],
                                      ignore_case="/"))
     dp.register_message_handler(load_id,
                                 state=AddProduct.id_product)

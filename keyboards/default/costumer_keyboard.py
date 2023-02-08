@@ -20,7 +20,10 @@ categories = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="Зимові"),
             KeyboardButton(text="Літні"),
+        ],
+        [
             KeyboardButton(text="Демісезонні"),
+            KeyboardButton(text="Новинки"),
         ],
         [
             KeyboardButton(text="Назад"),

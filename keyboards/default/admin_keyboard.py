@@ -4,9 +4,11 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 admin_menu = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Додати товар"),
-            KeyboardButton(text="Оновити товар"),
-            KeyboardButton(text="Видалити товар")
+            KeyboardButton(text="\U0001f4E6 Додати товар"),
+            KeyboardButton(text="\U0001f504 Оновити товар"),
+        ],
+        [
+            KeyboardButton(text="\U0000274C Видалити товар")
         ]
     ],
     resize_keyboard=True
@@ -17,7 +19,11 @@ update_product = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="Фото"),
             KeyboardButton(text="Ціну"),
-            KeyboardButton(text="Кількість")
+
+        ],
+        [
+            KeyboardButton(text="Кількість"),
+            KeyboardButton(text="Переглянути товар")
         ],
         [
             KeyboardButton(text="Назад")

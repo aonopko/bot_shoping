@@ -17,4 +17,4 @@ async def update_products(m: Message):
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_check, CheckAdmin(), commands=["admin"], state="*")
-    dp.register_message_handler(update_products, CheckAdmin(), text=["Оновити товар"], state="*")
+    dp.register_message_handler(update_products, CheckAdmin(), text=["\U0001f504 Оновити товар"], state="*")

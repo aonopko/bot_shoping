@@ -13,4 +13,7 @@ class AddProduct(StatesGroup):
     photo = State()
 
 
+class DelProduct(StatesGroup):
+    id_product = State()
+
 
