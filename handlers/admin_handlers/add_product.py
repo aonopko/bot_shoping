@@ -2,6 +2,7 @@ from aiogram.types import Message
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
+from asyncpg.exceptions import UniqueViolationError
 
 from filters.bot_filter import CheckAdmin
 from states.admin_state import AddProduct
@@ -16,7 +17,7 @@ async def add_id(m: Message):
 async def load_id(m: Message, state: FSMContext):
     async with state.proxy() as data:
         try:
-            data["id"] = int(m.text)
+            data["id_product"] = int(m.text)
         except ValueError:
             await m.answer("\U0000203C  Потрібно ввести число")
         else:
@@ -82,8 +83,14 @@ async def load_quantity(m: Message, state: FSMContext):
 async def load_photo(m: Message, state: FSMContext):
     async with state.proxy() as data:
         data["photo"] = m.photo[0].file_id
-        await add_item(**data)
-        await m.answer("Товар додано")
+        try:
+            await add_item(**data)
+        except UniqueViolationError:
+            await m.answer("\U0000203C Такий товар існує \n"
+                           "Спробуйте ще раз")
+        else:
+            await m.answer("\U0001F44D Товар додано")
+    await state.finish()
 
 
 def register_add_product_handlers(dp: Dispatcher):

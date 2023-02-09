@@ -15,10 +15,19 @@ async def delete_item(m: Message):
 
 async def del_id(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        get_id = data["id"] = int(m.text)
-        await del_item(get_id)
-        await m.answer("Товар видалено")
-        await state.finish()
+        try:
+            data["id_product"] = int(m.text)
+            id_product = data.get("id_product")
+        except ValueError:
+            await m.answer("\U0000203C Потрібно ввести число")
+        else:
+            try:
+                await del_item(id_product)
+            except AttributeError:
+                await m.answer("\U0000203C Такого товару не існує")
+            else:
+                await m.answer("Товар видалено")
+                await state.finish()
 
 
 def register_del_product_hendlers(dp: Dispatcher):

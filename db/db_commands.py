@@ -12,6 +12,6 @@ async def add_item(**kwargs):
     return new_item
 
 
-async def del_item(id_item):
-    new_item = await Product.delete.where(id_item == Product.id).gino.status()
-    return new_item
+async def del_item(id_product):
+    item = await Product.get(id_product)
+    await item.delete()
