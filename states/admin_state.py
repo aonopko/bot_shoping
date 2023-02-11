@@ -1,5 +1,4 @@
 
-from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
 
@@ -17,3 +16,8 @@ class DelProduct(StatesGroup):
     id_product = State()
 
 
+class UpdateProduct(StatesGroup):
+    id_product = State()
+    photo = State()
+    price = State()
+    quantity = State()

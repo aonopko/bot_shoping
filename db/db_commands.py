@@ -15,3 +15,8 @@ async def add_item(**kwargs):
 async def del_item(id_product):
     item = await Product.get(id_product)
     await item.delete()
+
+
+async def update_photo_item(id_product, photo):
+    product = Product.get(id_product)
+    await product.update(photo == photo).apply()

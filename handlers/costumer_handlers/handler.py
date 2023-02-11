@@ -10,6 +10,7 @@ async def costumer_start(m: Message):
 
 async def socks_button(m: Message):
     await m.answer("Меню", reply_markup=categories)
+    await m.answer("Додайте id товара")
 
 
 def register_costumer_handlers(dp: Dispatcher):

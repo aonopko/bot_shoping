@@ -8,7 +8,8 @@ admin_menu = ReplyKeyboardMarkup(
             KeyboardButton(text="\U0001f504 Оновити товар"),
         ],
         [
-            KeyboardButton(text="\U0000274C Видалити товар")
+            KeyboardButton(text="\U0000274C Видалити товар"),
+            KeyboardButton(text="Переглянути товар")
         ]
     ],
     resize_keyboard=True
@@ -23,9 +24,6 @@ update_product = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Кількість"),
-            KeyboardButton(text="Переглянути товар")
-        ],
-        [
             KeyboardButton(text="Назад")
         ]
     ], resize_keyboard=True

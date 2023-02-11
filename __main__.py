@@ -12,6 +12,7 @@ from handlers.admin_handlers.menu import register_admin_handlers
 from handlers.admin_handlers.add_product import register_add_product_handlers
 from filters.bot_filter import register_filters
 from handlers.admin_handlers.delete_product import register_del_product_hendlers
+from handlers.admin_handlers.update_product import register_update_product_hendlers
 
 
 async def main():
@@ -30,6 +31,7 @@ async def main():
     register_add_product_handlers(dp)
     register_filters(dp)
     register_del_product_hendlers(dp)
+    register_update_product_hendlers(dp)
 
     try:
         await dp.start_polling()
