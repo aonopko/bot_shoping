@@ -21,9 +21,8 @@ async def add_foto(m: Message):
 async def update_photo(m: Message, state: FSMContext):
     async with state.proxy() as data:
         data["photo"] = m.photo[0].file_id
-        await m.answer("\U0001F44D Фото додано")
+        await m.answer("Фото додано \U0001F44D")
         await state.reset_state()
-        await m.answer(f"{data}")
 
 
 async def add_price(m: Message):
@@ -38,9 +37,8 @@ async def update_price(m: Message, state: FSMContext):
         except ValueError:
             await m.answer("\U0000203C Потрібно ввести число")
         else:
-            await m.answer("Ціну додано")
+            await m.answer("Ціну додано \U0001F44D")
         await state.reset_state()
-        await m.answer(f"{data}")
 
 
 async def add_quantity(m: Message):
@@ -55,9 +53,8 @@ async def update_quantity(m: Message, state: FSMContext):
         except ValueError:
             await m.answer("\U0000203C Потрібно ввести число")
         else:
-            await m.answer("Кількість додано")
+            await m.answer("Кількість додано \U0001F44D")
         await state.reset_state()
-        await m.answer(f"{data}")
 
 
 async def add_update(m: Message):
@@ -69,26 +66,25 @@ async def update_id(m: Message, state: FSMContext):
     async with state.proxy() as data:
         if not data:
             await state.reset_state()
-            await m.answer("Потрібно ввести данні")
-            await m.answer(f"{data}")
+            await m.answer("\U0000203C Потрібно ввести данні")
         else:
-            await m.answer("\U0000231B Додайте id товару")
             try:
                 data["id_product"] = int(m.text)
             except ValueError:
-                await m.answer("\U0000203C  Потрібно ввести число")
+                await m.answer("\U0000203C Потрібно ввести число")
             else:
                 await state.reset_state()
-                await m.answer("\U0000231B id Додано")
                 get_args = data.get("id_product")
                 get_photo = data.get("photo")
                 get_quantity = data.get("quantity")
                 get_price = data.get("price")
-                await update_item(get_args,
-                                  photo=get_photo,
-                                  price=get_price,
-                                  quantity=get_quantity)
-                await m.answer(f"{data}")
+                try:
+                    await update_item(get_args,
+                                      photo=get_photo,
+                                      price=get_price,
+                                      quantity=get_quantity)
+                except AttributeError:
+                    await m.answer("\U0000203C Такого id не існує")
 
 
 def register_update_product_hendlers(dp: Dispatcher):

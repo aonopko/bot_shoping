@@ -17,6 +17,8 @@ async def del_item(id_product):
     await item.delete()
 
 
-async def update_item(id_product, **kwargs):
+async def update_item(id_product, photo=None, quantity=None,
+                      price=None):
     product = await Product.get(id_product)
-    await product.update(**kwargs).apply()
+    await product.update(photo=photo, quantity=quantity,
+                         price=price).apply()
