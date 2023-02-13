@@ -24,7 +24,7 @@ update_product = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Кількість"),
-            KeyboardButton(text="Додати")
+            KeyboardButton(text="Додати id")
         ],
         [
             KeyboardButton(text="Назад")

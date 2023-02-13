@@ -5,12 +5,29 @@ from aiogram.dispatcher import FSMContext
 from filters.bot_filter import CheckAdmin
 from states.admin_state import UpdateProduct
 from keyboards.default.admin_keyboard import update_product
-from db.db_commands import update_item
+from db.db_commands import update_db_photo
 
 
 async def update_products(m: Message):
     await m.answer(text="Ваше меню для оновлення",
                    reply_markup=update_product)
+
+
+async def add_id(m: Message):
+    await UpdateProduct.id_product.set()
+    await m.answer("Додайте id")
+
+
+async def update_id(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        try:
+            data["id_product"] = int(m.text)
+        except ValueError:
+            await m.answer("\U0000203C Потрібно ввести число")
+        else:
+            await m.answer("Додайте дані товару які бажаєте змінити \U0001F44D")
+            await state.reset_state()
+            await m.answer(f"{data}")
 
 
 async def add_foto(m: Message):
@@ -20,9 +37,18 @@ async def add_foto(m: Message):
 
 async def update_photo(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        data["photo"] = m.photo[0].file_id
-        await m.answer("Фото додано \U0001F44D")
-        await state.reset_state()
+        if not data:
+            await m.answer("\U0000203C Треба додати id товару")
+        else:
+            data["photo"] = m.photo[0].file_id
+            get_id = data.get("id_product")
+            get_photo = data.get("photo")
+            try:
+                await update_db_photo(get_id, get_photo)
+            except AttributeError:
+                await m.answer("\U0000203C Нажаль такого товару не існує")
+    await m.answer("Фото змінено \U0001F44D")
+    await state.finish()
 
 
 async def add_price(m: Message):
@@ -38,7 +64,8 @@ async def update_price(m: Message, state: FSMContext):
             await m.answer("\U0000203C Потрібно ввести число")
         else:
             await m.answer("Ціну додано \U0001F44D")
-        await state.reset_state()
+            await m.answer(f"{data}")
+        await state.finish()
 
 
 async def add_quantity(m: Message):
@@ -54,46 +81,23 @@ async def update_quantity(m: Message, state: FSMContext):
             await m.answer("\U0000203C Потрібно ввести число")
         else:
             await m.answer("Кількість додано \U0001F44D")
-        await state.reset_state()
+        await m.answer(f"{data}")
+        await state.finish()
 
 
 async def add_update(m: Message):
-    await m.answer("\U0000231B Додайте id товару")
-    await UpdateProduct.id_product.set()
-
-
-async def update_id(m: Message, state: FSMContext):
-    async with state.proxy() as data:
-        if not data:
-            await state.reset_state()
-            await m.answer("\U0000203C Потрібно ввести данні")
-        else:
-            try:
-                data["id_product"] = int(m.text)
-            except ValueError:
-                await m.answer("\U0000203C Потрібно ввести число")
-            else:
-                await state.reset_state()
-                get_args = data.get("id_product")
-                get_photo = data.get("photo")
-                get_quantity = data.get("quantity")
-                get_price = data.get("price")
-                try:
-                    await update_item(get_args,
-                                      photo=get_photo,
-                                      price=get_price,
-                                      quantity=get_quantity)
-                except AttributeError:
-                    await m.answer("\U0000203C Такого id не існує")
+    pass
 
 
 def register_update_product_hendlers(dp: Dispatcher):
     dp.register_message_handler(update_products, CheckAdmin(),
                                 text=["\U0001f504 Оновити товар"])
-    dp.register_message_handler(add_update, CheckAdmin(),
-                                text=["Додати"])
+    dp.register_message_handler(add_id, CheckAdmin(),
+                                text=["Додати id"])
     dp.register_message_handler(update_id,
                                 state=UpdateProduct.id_product)
+    # dp.register_message_handler(add_update, CheckAdmin(),
+    #                             text=["Додати"])
     dp.register_message_handler(add_foto, CheckAdmin(),
                                 text=["Фото"])
     dp.register_message_handler(update_photo,
