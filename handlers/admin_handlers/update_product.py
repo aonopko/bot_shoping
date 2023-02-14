@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from filters.bot_filter import CheckAdmin
 from states.admin_state import UpdateProduct
 from keyboards.default.admin_keyboard import update_product
-from db.db_commands import update_db_photo
+from db.db_commands import UpdateData
 
 
 async def update_products(m: Message):
@@ -41,13 +41,14 @@ async def update_photo(m: Message, state: FSMContext):
             await m.answer("\U0000203C Треба додати id товару")
         else:
             data["photo"] = m.photo[0].file_id
-            get_id = data.get("id_product")
-            get_photo = data.get("photo")
+            id_product = data.get("id_product")
+            photo = data.get("photo")
+            update = UpdateData(id_product, photo)
             try:
-                await update_db_photo(get_id, get_photo)
+                await update.update_db_photo()
+                await m.answer("Фото змінено \U0001F44D")
             except AttributeError:
                 await m.answer("\U0000203C Нажаль такого товару не існує")
-    await m.answer("Фото змінено \U0001F44D")
     await state.finish()
 
 
@@ -58,14 +59,25 @@ async def add_price(m: Message):
 
 async def update_price(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        try:
-            data["price"] = int(m.text)
-        except ValueError:
-            await m.answer("\U0000203C Потрібно ввести число")
+        if not data:
+            await m.answer("\U0000203C Треба додати id товару")
         else:
-            await m.answer("Ціну додано \U0001F44D")
+            try:
+                data["price"] = int(m.text)
+            except ValueError:
+                await m.answer("\U0000203C Потрібно ввести число")
+
+            id_product = data.get("id_product")
+            price = data.get("price")
+            u = UpdateData(id_product, price)
+            await m.answer(f"{id_product}, {price}")
+            try:
+                await u.update_db_price()
+                await m.answer("Ціну змінено \U0001F44D")
+            except AttributeError:
+                await m.answer("\U0000203C Нажаль такого товару не існує")
             await m.answer(f"{data}")
-        await state.finish()
+            await state.finish()
 
 
 async def add_quantity(m: Message):

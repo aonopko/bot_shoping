@@ -17,6 +17,21 @@ async def del_item(id_product):
     await item.delete()
 
 
-async def update_db_photo(id_product, photo):
-    product = await Product.get(id_product)
-    await product.update(photo=photo).apply()
+class UpdateData:
+    def __init__(self, id_product, photo=None, price=None, quantity=None):
+        self.id_product = id_product
+        self.photo = photo
+        self.price = price
+        self.quantity = quantity
+
+    async def update_db_photo(self):
+        product = await Product.get(self.id_product)
+        await product.update(photo=self.photo).apply()
+
+    async def update_db_price(self):
+        product = await Product.get(self.id_product)
+        await product.update(price=self.price).apply()
+
+    async def update_db_quantity(self):
+        product = await Product.get(self.id_product)
+        await product.update(quantity=self.quantity).apply()
