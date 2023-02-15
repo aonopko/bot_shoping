@@ -27,7 +27,6 @@ async def update_id(m: Message, state: FSMContext):
         else:
             await m.answer("Додайте дані товару які бажаєте змінити \U0001F44D")
             await state.reset_state()
-            await m.answer(f"{data}")
 
 
 async def add_foto(m: Message):
@@ -59,25 +58,25 @@ async def add_price(m: Message):
 
 async def update_price(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        if not data:
-            await m.answer("\U0000203C Треба додати id товару")
-        else:
+        if data:
             try:
                 data["price"] = int(m.text)
             except ValueError:
                 await m.answer("\U0000203C Потрібно ввести число")
-
-            id_product = data.get("id_product")
-            price = data.get("price")
-            u = UpdateData(id_product, price)
-            await m.answer(f"{id_product}, {price}")
-            try:
-                await u.update_db_price()
-                await m.answer("Ціну змінено \U0001F44D")
-            except AttributeError:
-                await m.answer("\U0000203C Нажаль такого товару не існує")
-            await m.answer(f"{data}")
-            await state.finish()
+            else:
+                id_product = data.get("id_product")
+                price = data.get("price")
+                update = UpdateData(id_product, price)
+                try:
+                    await update.update_db_price(id_product, price)
+                except AttributeError:
+                    await m.answer("\U0000203C Нажаль такого товару не існує")
+                    await state.finish()
+                else:
+                    await m.answer("Ціну змінено \U0001F44D")
+        else:
+            await m.answer("\U0000203C id треба додати")
+        await state.finish()
 
 
 async def add_quantity(m: Message):
@@ -87,18 +86,25 @@ async def add_quantity(m: Message):
 
 async def update_quantity(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        try:
-            data["quantity"] = int(m.text)
-        except ValueError:
-            await m.answer("\U0000203C Потрібно ввести число")
+        if data:
+            try:
+                data["quantity"] = int(m.text)
+            except ValueError:
+                await m.answer("\U0000203C Потрібно ввести число")
+            else:
+                id_product = data.get("id_product")
+                quantity = data.get("quantity")
+                u = UpdateData(id_product, quantity)
+                try:
+                    await u.update_db_quantity(id_product, quantity)
+                except AttributeError:
+                    await m.answer("\U0000203C Нажаль такого товару не існує")
+                    await state.finish()
+                else:
+                    await m.answer("Кількість змінено \U0001F44D")
         else:
-            await m.answer("Кількість додано \U0001F44D")
-        await m.answer(f"{data}")
+            await m.answer("\U0000203C id треба додати")
         await state.finish()
-
-
-async def add_update(m: Message):
-    pass
 
 
 def register_update_product_hendlers(dp: Dispatcher):
@@ -108,8 +114,6 @@ def register_update_product_hendlers(dp: Dispatcher):
                                 text=["Додати id"])
     dp.register_message_handler(update_id,
                                 state=UpdateProduct.id_product)
-    # dp.register_message_handler(add_update, CheckAdmin(),
-    #                             text=["Додати"])
     dp.register_message_handler(add_foto, CheckAdmin(),
                                 text=["Фото"])
     dp.register_message_handler(update_photo,

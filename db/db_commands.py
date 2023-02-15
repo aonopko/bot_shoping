@@ -18,20 +18,23 @@ async def del_item(id_product):
 
 
 class UpdateData:
-    def __init__(self, id_product, photo=None, price=None, quantity=None):
+    def __init__(self, id_product, photo=None,
+                 price=None, quantity=None):
         self.id_product = id_product
         self.photo = photo
         self.price = price
         self.quantity = quantity
 
+    async def update_db_price(self, id_product, price):
+        product = await Product.get(id_product)
+        await product.update(price=price).apply()
+
     async def update_db_photo(self):
         product = await Product.get(self.id_product)
         await product.update(photo=self.photo).apply()
 
-    async def update_db_price(self):
-        product = await Product.get(self.id_product)
-        await product.update(price=self.price).apply()
+    async def update_db_quantity(self, id_product, quantity):
+        product = await Product.get(id_product)
+        await product.update(quantity=quantity).apply()
 
-    async def update_db_quantity(self):
-        product = await Product.get(self.id_product)
-        await product.update(quantity=self.quantity).apply()
+
