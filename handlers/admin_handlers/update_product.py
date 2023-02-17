@@ -36,9 +36,7 @@ async def add_foto(m: Message):
 
 async def update_photo(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        if not data:
-            await m.answer("\U0000203C Треба додати id товару")
-        else:
+        if data:
             data["photo"] = m.photo[0].file_id
             id_product = data.get("id_product")
             photo = data.get("photo")
@@ -48,35 +46,42 @@ async def update_photo(m: Message, state: FSMContext):
                 await m.answer("Фото змінено \U0001F44D")
             except AttributeError:
                 await m.answer("\U0000203C Нажаль такого товару не існує")
+        else:
+            await m.answer("\U0000203C Треба додати id товару")
     await state.finish()
 
 
-async def add_price(m: Message):
-    await m.answer("Додайте ціну")
-    await UpdateProduct.price.set()
+async def add_price(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        if data:
+            await m.answer("Додайте ціну")
+            await UpdateProduct.price.set()
+        else:
+            await m.answer("\U0000203C З початку треба додати id")
+            await state.finish()
 
 
 async def update_price(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        if data:
-            try:
-                data["price"] = int(m.text)
-            except ValueError:
-                await m.answer("\U0000203C Потрібно ввести число")
-            else:
-                id_product = data.get("id_product")
-                price = data.get("price")
-                update = UpdateData(id_product, price)
-                try:
-                    await update.update_db_price(id_product, price)
-                except AttributeError:
-                    await m.answer("\U0000203C Нажаль такого товару не існує")
-                    await state.finish()
-                else:
-                    await m.answer("Ціну змінено \U0001F44D")
+        try:
+            data["price"] = int(m.text)
+        except ValueError:
+            await m.answer("\U0000203C Потрібно ввести число")
         else:
-            await m.answer("\U0000203C id треба додати")
-        await state.finish()
+            await m.answer(f"Приевт {data}")
+
+            id_product = data.get("id_product")
+            price = data.get("price")
+            update = UpdateData(id_product, price)
+            try:
+                await update.update_db_price(id_product, price)
+            except AttributeError:
+                await m.answer("\U0000203C Нажаль такого товару не існує")
+                await state.finish()
+            else:
+                await m.answer("Ціну змінено \U0001F44D")
+
+    await state.finish()
 
 
 async def add_quantity(m: Message):
