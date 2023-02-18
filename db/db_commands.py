@@ -36,5 +36,3 @@ class UpdateData:
     async def update_db_quantity(self, id_product, quantity):
         product = await Product.get(id_product)
         await product.update(quantity=quantity).apply()
-
-

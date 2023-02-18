@@ -19,7 +19,7 @@ async def load_id(m: Message, state: FSMContext):
         try:
             data["id_product"] = int(m.text)
         except ValueError:
-            await m.answer("\U0000203C  Потрібно ввести число")
+            await m.reply("\U0000203C  Потрібно ввести число")
         else:
             await AddProduct.next()
             await m.answer("\U0000231B Додайте назву товару")
@@ -29,7 +29,7 @@ async def load_name(m: Message, state: FSMContext):
     async with state.proxy() as data:
         text = m.text.isdigit()
         if text is True:
-            await m.answer("\U0000203C Потрібно ввести буквами")
+            await m.reply("\U0000203C Потрібно ввести буквами")
         else:
             data["name"] = m.text
             await AddProduct.next()
@@ -40,7 +40,7 @@ async def load_category(m: Message, state: FSMContext):
     async with state.proxy() as data:
         text = m.text.isdigit()
         if text is True:
-            await m.answer("\U0000203C Потрібно ввести буквами")
+            await m.reply("\U0000203C Потрібно ввести буквами")
         else:
             data["category"] = m.text
             await AddProduct.next()
@@ -51,7 +51,7 @@ async def load_sub_category(m: Message, state: FSMContext):
     async with state.proxy() as data:
         text = m.text.isdigit()
         if text is True:
-            await m.answer("\U0000203C Потрібно ввести буквами")
+            await m.reply("\U0000203C Потрібно ввести буквами")
         else:
             data["sub_category"] = m.text
             await AddProduct.next()
@@ -63,7 +63,7 @@ async def load_price(m: Message, state: FSMContext):
         try:
             data["price"] = int(m.text)
         except ValueError:
-            await m.answer("\U0000203CПотрібно ввести число")
+            await m.reply("\U0000203C Потрібно ввести число")
         else:
             await AddProduct.next()
             await m.answer("\U0000231B Додайте кількість товару")
@@ -74,7 +74,7 @@ async def load_quantity(m: Message, state: FSMContext):
         try:
             data["quantity"] = int(m.text)
         except ValueError:
-            await m.answer("\U0000203C Потрібно ввести число")
+            await m.reply("\U0000203C Потрібно ввести число")
         else:
             await AddProduct.next()
             await m.answer("\U0000231B Додайте фото товру")
@@ -86,8 +86,9 @@ async def load_photo(m: Message, state: FSMContext):
         try:
             await add_item(**data)
         except UniqueViolationError:
-            await m.answer("\U0000203C Такий товар існує \n"
-                           "Спробуйте ще раз")
+            id_item = data.get("id_product")
+            await m.reply(f"\U0000203C Товар с id {id_item} існує\n"
+                          "Спробуйте ще раз")
         else:
             await m.answer("\U0001F44D Товар додано")
     await state.finish()
