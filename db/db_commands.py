@@ -1,3 +1,4 @@
+import asyncio
 
 from models.db_models import Admins, Product
 
@@ -18,8 +19,8 @@ async def del_item(id_product):
 
 
 async def get_all_items():
-    products = await Product.query.gino.all()
-    return products
+    product = await Product.query.gino.all()
+    return product
 
 
 class UpdateData:

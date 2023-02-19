@@ -7,8 +7,9 @@ from db.db_commands import get_all_items
 
 
 async def get_items(m: Message):
-    get_items = await get_all_items()
-    await m.answer(f"Привіт {str(get_items)}")
+    get_item = await get_all_items()
+    for item in get_item:
+        await m.answer(f"Привіт {item}")
 
 
 def register_get_all_items(dp: Dispatcher):
