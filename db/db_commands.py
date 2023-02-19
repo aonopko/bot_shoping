@@ -17,6 +17,11 @@ async def del_item(id_product):
     await item.delete()
 
 
+async def get_all_items():
+    products = await Product.query.gino.all()
+    return products
+
+
 class UpdateData:
     def __init__(self, id_product, photo=None,
                  price=None, quantity=None):

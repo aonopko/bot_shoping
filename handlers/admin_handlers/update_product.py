@@ -118,7 +118,7 @@ async def update_quantity(m: Message, state: FSMContext):
 
 def register_update_product_hendlers(dp: Dispatcher):
     dp.register_message_handler(back, CheckAdmin(),
-                                text=["Назад"])
+                                text=["\U000025C0 Назад"])
     dp.register_message_handler(update_products, CheckAdmin(),
                                 text=["\U0001f504 Оновити товар"])
     dp.register_message_handler(add_id, CheckAdmin(),

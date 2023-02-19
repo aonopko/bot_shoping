@@ -18,16 +18,16 @@ admin_menu = ReplyKeyboardMarkup(
 update_product = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Фото"),
-            KeyboardButton(text="Ціну"),
+            KeyboardButton(text="\U0001F4F7 Фото"),
+            KeyboardButton(text="\U0001F4C8 Ціну"),
 
         ],
         [
-            KeyboardButton(text="Кількість"),
-            KeyboardButton(text="Додати id")
+            KeyboardButton(text="\U0001F4CA Кількість"),
+            KeyboardButton(text="\U0001F194 Додати id")
         ],
         [
-            KeyboardButton(text="Назад")
+            KeyboardButton(text="\U000025C0 Назад")
         ]
     ], resize_keyboard=True
 )
