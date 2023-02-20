@@ -16,6 +16,10 @@ class DelProduct(StatesGroup):
     id_product = State()
 
 
+class GetProduct(StatesGroup):
+    id_product = State()
+
+
 class UpdateProduct(StatesGroup):
     id_product = State()
     photo = State()

@@ -13,7 +13,7 @@ from handlers.admin_handlers.add_product import register_add_product_handlers
 from filters.bot_filter import register_filters
 from handlers.admin_handlers.delete_product import register_del_product_hendlers
 from handlers.admin_handlers.update_product import register_update_product_hendlers
-from handlers.admin_handlers.get_all_products import register_get_all_items
+from handlers.admin_handlers.get_products import register_get_all_items
 
 
 async def main():

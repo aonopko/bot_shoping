@@ -1,4 +1,5 @@
 import asyncio
+from typing import List
 
 from models.db_models import Admins, Product
 
@@ -16,6 +17,11 @@ async def add_item(**kwargs):
 async def del_item(id_product):
     item = await Product.get(id_product)
     await item.delete()
+
+
+async def get_item(id_product) -> List[Product]:
+    item = await Product.query.where(Product.id_product == id_product).gino.first()
+    return item
 
 
 async def get_all_items():
