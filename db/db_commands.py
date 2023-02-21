@@ -1,5 +1,3 @@
-import asyncio
-from typing import List
 
 from models.db_models import Admins, Product
 
@@ -19,7 +17,7 @@ async def del_item(id_product):
     await item.delete()
 
 
-async def get_item(id_product) -> List[Product]:
+async def get_item(id_product):
     item = await Product.query.where(Product.id_product == id_product).gino.first()
     return item
 
@@ -27,6 +25,11 @@ async def get_item(id_product) -> List[Product]:
 async def get_all_items():
     product = await Product.query.gino.all()
     return product
+
+
+async def get_all_photo():
+    photo = await Product.query.where(Product.photo == Product.photo).gino.all()
+    return photo
 
 
 class UpdateData:

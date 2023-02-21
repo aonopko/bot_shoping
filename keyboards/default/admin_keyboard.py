@@ -9,7 +9,10 @@ admin_menu = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="\U0000274C Видалити товар"),
-            KeyboardButton(text="Переглянути товар")
+        ],
+        [
+            KeyboardButton(text="Знайти товар по id"),
+            KeyboardButton(text="Знайти товар по фото")
         ]
     ],
     resize_keyboard=True

@@ -122,19 +122,19 @@ def register_update_product_hendlers(dp: Dispatcher):
     dp.register_message_handler(update_products, CheckAdmin(),
                                 text=["\U0001f504 Оновити товар"])
     dp.register_message_handler(add_id, CheckAdmin(),
-                                text=["Додати id"])
+                                text=["\U0001F194 Додати id"])
     dp.register_message_handler(update_id,
                                 state=UpdateProduct.id_product)
     dp.register_message_handler(add_foto, CheckAdmin(),
-                                text=["Фото"])
+                                text=["\U0001F4F7 Фото"])
     dp.register_message_handler(update_photo,
                                 state=UpdateProduct.photo,
                                 content_types=["photo"])
     dp.register_message_handler(add_price, CheckAdmin(),
-                                text=["Ціну"])
+                                text=["\U0001F4C8 Ціну"])
     dp.register_message_handler(update_price,
                                 state=UpdateProduct.price)
     dp.register_message_handler(add_quantity, CheckAdmin(),
-                                text=["Кількість"])
+                                text=["\U0001F4CA Кількість"])
     dp.register_message_handler(update_quantity,
                                 state=UpdateProduct.quantity)
