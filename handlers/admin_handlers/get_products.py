@@ -32,21 +32,15 @@ async def find_item_id(m: Message, state: FSMContext):
                 await m.answer_photo(photo.photo, f"id {photo.id_product},\n"
                                                   f" name {photo.name}\n"
                                                   f"photo {photo.price}")
-                await state.finish()
+        await state.finish()
 
 
 async def find_all_photo(m: Message):
     find_photo = await get_all_photo()
-    logger.info(find_photo)
-    v = 0
-    while len(find_photo):
-        for i in find_photo:
-            album = [
-                InputMediaPhoto(i.photo[v])
-        ]
-            v += 1
-            logger.info(album)
-            await m.answer_media_group(media=album)
+    album = []
+    for i in find_photo:
+        album.append(InputMediaPhoto(i.photo, f"id: {i.id_product}"))
+    await m.answer_media_group(media=album)
 
 
 def register_get_all_items(dp: Dispatcher):

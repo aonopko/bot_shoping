@@ -1,6 +1,7 @@
 from aiogram.types import Message
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
+from loguru import logger
 
 from filters.bot_filter import CheckAdmin
 from states.admin_state import UpdateProduct
@@ -55,6 +56,7 @@ async def update_photo(m: Message, state: FSMContext):
             await m.answer("Фото змінено \U0001F44D")
         except AttributeError:
             await m.answer("\U0000203C Нажаль такого товару не існує")
+            data.clear()
         await state.finish()
 
 
@@ -62,6 +64,7 @@ async def add_price(m: Message, state: FSMContext):
     async with state.proxy() as data:
         if data:
             await m.answer("Додайте ціну")
+
             await UpdateProduct.price.set()
         else:
             await m.answer("\U0000203C З початку треба додати id")
@@ -81,10 +84,10 @@ async def update_price(m: Message, state: FSMContext):
                 await update.update_db_price(id_product, price)
             except AttributeError:
                 await m.reply("\U0000203C Нажаль такого товару не існує")
-                await state.finish()
+                ldata.clear()
             else:
                 await m.answer("Ціну змінено \U0001F44D")
-            await state.finish()
+        await state.finish()
 
 
 async def add_quantity(m: Message, state: FSMContext):
@@ -110,7 +113,7 @@ async def update_quantity(m: Message, state: FSMContext):
                 await update.update_db_quantity(id_product, quantity)
             except AttributeError:
                 await m.reply("\U0000203C Нажаль такого товару не існує")
-                await state.finish()
+                data.clear()
             else:
                 await m.answer("Кількість змінено \U0001F44D")
             await state.finish()
