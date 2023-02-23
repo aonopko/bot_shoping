@@ -84,7 +84,7 @@ async def update_price(m: Message, state: FSMContext):
                 await update.update_db_price(id_product, price)
             except AttributeError:
                 await m.reply("\U0000203C Нажаль такого товару не існує")
-                ldata.clear()
+                data.clear()
             else:
                 await m.answer("Ціну змінено \U0001F44D")
         await state.finish()

@@ -1,9 +1,10 @@
 import types
 from loguru import logger
-from aiogram.types import Message, MediaGroup, InputMediaPhoto
+from aiogram.types import Message, MediaGroup, InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
+
 
 from filters.bot_filter import CheckAdmin
 from db.db_commands import get_item, get_all_photo
@@ -29,9 +30,12 @@ async def find_item_id(m: Message, state: FSMContext):
                 await m.answer("\U0000203C Такого товару не існує")
             else:
                 logger.info(f"{photo.photo}")
+                button = InlineKeyboardButton(text="Нажми меня", callback_data="button_pressed")
+                markup = InlineKeyboardMarkup().add(button)
                 await m.answer_photo(photo.photo, f"id {photo.id_product},\n"
-                                                  f" name {photo.name}\n"
-                                                  f"photo {photo.price}")
+                                                  f"{photo.name}\n"
+                                                  f"ціна {photo.price} грн",
+                                     reply_markup=markup)
         await state.finish()
 
 

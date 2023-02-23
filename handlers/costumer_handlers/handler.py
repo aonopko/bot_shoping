@@ -15,5 +15,5 @@ async def socks_button(m: Message):
 def register_costumer_handlers(dp: Dispatcher):
     dp.register_message_handler(costumer_start, commands=["start"],
                                 state="*")
-    dp.register_message_handler(socks_button, text=["Шкарпетки"],
+    dp.register_message_handler(socks_button, text=["Каталог"],
                                 state="*")

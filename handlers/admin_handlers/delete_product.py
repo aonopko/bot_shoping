@@ -24,7 +24,7 @@ async def del_id(m: Message, state: FSMContext):
             try:
                 await del_item(id_product)
             except AttributeError:
-                await m.answer("\U0000203C Такого товару не існує")
+                await m.reply("\U0000203C Такого товару не існує")
             else:
                 await m.answer("Товар видалено")
         await state.finish()
