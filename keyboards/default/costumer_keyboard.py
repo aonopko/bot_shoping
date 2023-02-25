@@ -18,12 +18,13 @@ main_menu = ReplyKeyboardMarkup(
 categories = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Зимові"),
+            KeyboardButton(text="Теплі"),
             KeyboardButton(text="Літні"),
+            KeyboardButton(text="Новорічні")
         ],
         [
-            KeyboardButton(text="Демісезонні"),
             KeyboardButton(text="Новинки"),
+            KeyboardButton(text="Акція"),
         ],
         [
             KeyboardButton(text="Назад"),
