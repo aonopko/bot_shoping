@@ -119,6 +119,34 @@ async def update_quantity(m: Message, state: FSMContext):
             await state.finish()
 
 
+async def add_promotion(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        if data:
+            await m.answer("Додати акцію")
+            await UpdateProduct.promotion.set()
+            logger.info(data)
+        else:
+            await m.answer("\U0000203C З початку треба додати id")
+
+
+async def update_promotion(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        logger.info(data)
+        data["promotion"] = True
+        id_product = data.get("id_product")
+        promotion = data.get("promotion")
+        logger.info(data)
+        update = UpdateData(id_product, promotion)
+        try:
+            await update.update_db_quantity(id_product, promotion)
+        except AttributeError:
+            await m.reply("\U0000203C Нажаль такого товару не існує")
+            data.clear()
+        else:
+            await m.answer("Акцію додано \U0001F44D")
+        await state.finish()
+
+
 def register_update_product_hendlers(dp: Dispatcher):
     dp.register_message_handler(back, CheckAdmin(),
                                 text=["\U000025C0 Назад"])
@@ -141,3 +169,7 @@ def register_update_product_hendlers(dp: Dispatcher):
                                 text=["\U0001F4CA Кількість"])
     dp.register_message_handler(update_quantity,
                                 state=UpdateProduct.quantity)
+    dp.register_message_handler(add_promotion, CheckAdmin(),
+                                text=["Додати акцію"])
+    dp.register_message_handler(update_promotion,
+                                state=UpdateProduct.promotion)

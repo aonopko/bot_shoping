@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
+from sqlalchemy import Integer, String, Column, DateTime, ForeignKey, Boolean
 
 from db.base import db_gino
 
@@ -27,6 +27,7 @@ class Product(db_gino.Model):
     sub_category = Column(String(50))
     price = Column(Integer)
     quantity = Column(Integer)
+    promotion = Column(Boolean(), default=None)
     photo = Column(String(250))
 
     def __str__(self):

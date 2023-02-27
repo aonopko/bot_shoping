@@ -25,3 +25,5 @@ class UpdateProduct(StatesGroup):
     photo = State()
     price = State()
     quantity = State()
+    promotion = State()
+    new_product = State()

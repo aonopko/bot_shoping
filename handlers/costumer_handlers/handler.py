@@ -12,8 +12,9 @@ async def socks_button(m: Message):
     await m.answer("Меню", reply_markup=categories)
 
 
-async def hot_soacks(m: Message):
+async def hot_socks(m: Message):
     await m.answer()
+    pass
 
 
 def register_costumer_handlers(dp: Dispatcher):

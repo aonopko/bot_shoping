@@ -29,13 +29,9 @@ async def find_item_id(m: Message, state: FSMContext):
             except AttributeError:
                 await m.answer("\U0000203C Такого товару не існує")
             else:
-                logger.info(f"{photo.photo}")
-                button = InlineKeyboardButton(text="Нажми меня", callback_data="button_pressed")
-                markup = InlineKeyboardMarkup().add(button)
                 await m.answer_photo(photo.photo, f"id {photo.id_product},\n"
                                                   f"{photo.name}\n"
-                                                  f"ціна {photo.price} грн",
-                                     reply_markup=markup)
+                                                  f"ціна {photo.price} грн")
         await state.finish()
 
 

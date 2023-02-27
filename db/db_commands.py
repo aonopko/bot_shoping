@@ -34,11 +34,12 @@ async def get_all_photo():
 
 class UpdateData:
     def __init__(self, id_product, photo=None,
-                 price=None, quantity=None):
+                 price=None, quantity=None, promotion=None):
         self.id_product = id_product
         self.photo = photo
         self.price = price
         self.quantity = quantity
+        self.promotion = promotion
 
     async def update_db_price(self, id_product, price):
         product = await Product.get(id_product)
@@ -51,3 +52,7 @@ class UpdateData:
     async def update_db_quantity(self, id_product, quantity):
         product = await Product.get(id_product)
         await product.update(quantity=quantity).apply()
+
+    async def update_db_promotion(self, id_product, promotion):
+        product = await Product.get(id_product)
+        await product.update(promotion=promotion).apply()
