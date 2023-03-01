@@ -27,7 +27,8 @@ class Product(db_gino.Model):
     sub_category = Column(String(50))
     price = Column(Integer)
     quantity = Column(Integer)
-    promotion = Column(Boolean(), default=None)
+    promotion = Column(Integer)
+    new_product = Column(Integer)
     photo = Column(String(250))
 
     def __str__(self):

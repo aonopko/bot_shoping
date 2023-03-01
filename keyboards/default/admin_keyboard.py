@@ -27,7 +27,7 @@ update_product = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="\U0001F4CA Кількість"),
-            KeyboardButton(text="Додати акцію")
+            KeyboardButton(text="Акція")
         ],
         [
             KeyboardButton(text="Додати Новінку"),

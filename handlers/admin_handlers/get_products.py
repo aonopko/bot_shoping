@@ -1,6 +1,6 @@
 import types
 from loguru import logger
-from aiogram.types import Message, MediaGroup, InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import Message, InputMediaPhoto
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
@@ -32,7 +32,7 @@ async def find_item_id(m: Message, state: FSMContext):
                 await m.answer_photo(photo.photo, f"id {photo.id_product},\n"
                                                   f"{photo.name}\n"
                                                   f"ціна {photo.price} грн")
-        await state.finish()
+            await state.finish()
 
 
 async def find_all_photo(m: Message):

@@ -1,4 +1,4 @@
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from loguru import logger
@@ -6,7 +6,7 @@ from loguru import logger
 from filters.bot_filter import CheckAdmin
 from states.admin_state import UpdateProduct
 from keyboards.default.admin_keyboard import update_product
-from db.db_commands import UpdateData
+from db.db_commands import UpdateData, update_db_promotion
 from keyboards.default.admin_keyboard import admin_menu
 
 
@@ -122,29 +122,49 @@ async def update_quantity(m: Message, state: FSMContext):
 async def add_promotion(m: Message, state: FSMContext):
     async with state.proxy() as data:
         if data:
-            await m.answer("Додати акцію")
+            button = InlineKeyboardButton("Додати акцію", callback_data="yes")
+            button_1 = InlineKeyboardButton("ВІдмінити", callback_data="no")
+            button_2 = InlineKeyboardButton("Видалити акію", callback_data="delete")
+            keyboard = InlineKeyboardMarkup()
+            keyboard.add(button, button_2, button_1)
+            await m.answer("Додати акцію", reply_markup=keyboard)
             await UpdateProduct.promotion.set()
-            logger.info(data)
         else:
             await m.answer("\U0000203C З початку треба додати id")
 
 
-async def update_promotion(m: Message, state: FSMContext):
+async def yes_promotion(call: CallbackQuery, state: FSMContext):
     async with state.proxy() as data:
-        logger.info(data)
-        data["promotion"] = True
-        id_product = data.get("id_product")
-        promotion = data.get("promotion")
-        logger.info(data)
-        update = UpdateData(id_product, promotion)
         try:
-            await update.update_db_quantity(id_product, promotion)
+            data["promotion"] = 1
+        except ValueError:
+            await call.answer("\U0000203C Потрібно ввести число")
+        else:
+            id_product = data.get("id_product")
+            promotion = data.get("promotion")
+        try:
+            await update_db_promotion(id_product, promotion)
         except AttributeError:
-            await m.reply("\U0000203C Нажаль такого товару не існує")
+            await call.answer("\U0000203C Нажаль такого товару не існує")
             data.clear()
         else:
-            await m.answer("Акцію додано \U0001F44D")
+            await call.answer("Акцію додано \U0001F44D")
         await state.finish()
+
+
+async def no_promotion(call: CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+        await call.answer("Відміна")
+        data.clear()
+        await state.finish()
+
+
+async def delete_promotion(call: CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+        pass
+
+
+
 
 
 def register_update_product_hendlers(dp: Dispatcher):
@@ -170,6 +190,10 @@ def register_update_product_hendlers(dp: Dispatcher):
     dp.register_message_handler(update_quantity,
                                 state=UpdateProduct.quantity)
     dp.register_message_handler(add_promotion, CheckAdmin(),
-                                text=["Додати акцію"])
-    dp.register_message_handler(update_promotion,
-                                state=UpdateProduct.promotion)
+                                text=["Акція"])
+    dp.register_callback_query_handler(yes_promotion,
+                                       state=UpdateProduct.promotion,
+                                       text="yes")
+    dp.register_callback_query_handler(no_promotion,
+                                       state=UpdateProduct.promotion,
+                                       text="no")

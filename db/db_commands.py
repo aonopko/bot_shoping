@@ -31,6 +31,10 @@ async def get_all_photo():
     photo = await Product.query.where(Product.photo == Product.photo).gino.all()
     return photo
 
+async def update_db_promotion(id_product, promotion):
+    product = await Product.get(id_product)
+    await product.update(promotion=promotion).apply()
+
 
 class UpdateData:
     def __init__(self, id_product, photo=None,
@@ -53,6 +57,4 @@ class UpdateData:
         product = await Product.get(id_product)
         await product.update(quantity=quantity).apply()
 
-    async def update_db_promotion(self, id_product, promotion):
-        product = await Product.get(id_product)
-        await product.update(promotion=promotion).apply()
+
