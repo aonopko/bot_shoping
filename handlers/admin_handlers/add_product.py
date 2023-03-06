@@ -10,22 +10,12 @@ from db.db_commands import add_item
 
 
 async def add_id(m: Message):
-    await AddProduct.id_product.set()
-    await m.answer("\U0000231B Додайте id товару")
-
-
-async def load_id(m: Message, state: FSMContext):
-    async with state.proxy() as data:
-        try:
-            data["id_product"] = int(m.text)
-        except ValueError:
-            await m.reply("\U0000203C  Потрібно ввести число")
-        else:
-            await AddProduct.next()
-            await m.answer("\U0000231B Додайте назву товару")
+    await AddProduct.name.set()
+    await m.answer("\U0000231B Додайте назву товару")
 
 
 async def load_name(m: Message, state: FSMContext):
+    await m.answer("OK")
     async with state.proxy() as data:
         text = m.text.isdigit()
         if text is True:
@@ -98,8 +88,6 @@ def register_add_product_handlers(dp: Dispatcher):
     dp.register_message_handler(add_id, CheckAdmin(),
                                 Text(equals=["\U0001f4E6 Додати товар"],
                                      ignore_case="/"))
-    dp.register_message_handler(load_id,
-                                state=AddProduct.id_product)
     dp.register_message_handler(load_name,
                                 state=AddProduct.name)
     dp.register_message_handler(load_category,

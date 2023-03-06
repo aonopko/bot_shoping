@@ -1,12 +1,13 @@
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
-#from loguru import logger
+from loguru import logger
+
 
 from filters.bot_filter import CheckAdmin
 from states.admin_state import UpdateProduct
 from keyboards.default.admin_keyboard import update_product
-from db.db_commands import UpdateData, update_db_promotion, delete_promotion
+from db.db_commands import UpdateData, update_db_promotion, delete_promotion, update_db_new_item, delete_new_item
 from keyboards.default.admin_keyboard import admin_menu
 
 
@@ -124,7 +125,7 @@ async def add_promotion(m: Message, state: FSMContext):
         if data:
             button = InlineKeyboardButton(text="Додати акцію", callback_data="yes")
             button_1 = InlineKeyboardButton(text="ВІдмінити", callback_data="no")
-            button_2 = InlineKeyboardButton(text="Видалити акіію", callback_data="delete")
+            button_2 = InlineKeyboardButton(text="Видалити акцію", callback_data="delete")
             keyboard = InlineKeyboardMarkup()
             keyboard.add(button, button_2, button_1)
             await m.answer("Меню акції", reply_markup=keyboard)
@@ -175,6 +176,62 @@ async def del_promotion(call: CallbackQuery, state: FSMContext):
         await state.finish()
 
 
+async def add_new_item(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        if data:
+            button = InlineKeyboardButton(text="Додати новинку", callback_data="yes_item")
+            button_1 = InlineKeyboardButton(text="ВІдмінити", callback_data="no_item")
+            button_2 = InlineKeyboardButton(text="Видалити новинку", callback_data="delete_item")
+            keyboard = InlineKeyboardMarkup()
+            keyboard.add(button, button_2, button_1)
+            await m.answer("Меню новинки", reply_markup=keyboard)
+            await UpdateProduct.new_product.set()
+        else:
+            await m.answer("\U0000203C З початку треба додати id")
+
+
+async def yes_new_item(call: CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+        try:
+            data["new_product"] = 1
+        except ValueError:
+            await call.message.answer("\U0000203C Потрібно ввести число")
+        else:
+            id_product = data.get("id_product")
+            new_product = data.get("new_product")
+        try:
+            await update_db_new_item(id_product, new_product)
+        except AttributeError:
+            await call.message.answer("\U0000203C Нажаль такого товару не існує")
+            data.clear()
+        else:
+            await call.message.answer("Новинку додано \U0001F44D")
+            await call.answer()
+        await state.finish()
+
+
+async def cancel_new_item(call: CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+        await call.message.answer("Відміна")
+        await call.answer()
+        data.clear()
+        await state.finish()
+
+
+async def del_new_item(call: CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+        id_product = data.get("id_product")
+        try:
+            await delete_new_item(id_product)
+        except AttributeError:
+            await call.message.answer("\U0000203C Нажаль такого товару не існує")
+            data.clear()
+        else:
+            await call.message.answer("Новинку видалено \U0001F44D")
+            await call.answer()
+        await state.finish()
+
+
 def register_update_product_hendlers(dp: Dispatcher):
     dp.register_message_handler(back, CheckAdmin(),
                                 text=["\U000025C0 Назад"])
@@ -208,3 +265,14 @@ def register_update_product_hendlers(dp: Dispatcher):
     dp.register_callback_query_handler(del_promotion,
                                        state=UpdateProduct.promotion,
                                        text="delete")
+    dp.register_message_handler(add_new_item, CheckAdmin(),
+                                text=["Новинка"])
+    dp.register_callback_query_handler(yes_new_item,
+                                       state=UpdateProduct.new_product,
+                                       text="yes_item")
+    dp.register_callback_query_handler(cancel_new_item,
+                                       state=UpdateProduct.new_product,
+                                       text="no_item")
+    dp.register_callback_query_handler(del_new_item,
+                                       state=UpdateProduct.new_product,
+                                       text="delete_item")

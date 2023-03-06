@@ -42,6 +42,16 @@ async def delete_promotion(id_product):
     await product.update(promotion=None).apply()
 
 
+async def update_db_new_item(id_product, new_product):
+    product = await Product.get(id_product)
+    await product.update(new_product=new_product).apply()
+
+
+async def delete_new_item(id_product):
+    product = await Product.get(id_product)
+    await product.update(new_product=None).apply()
+
+
 class UpdateData:
     def __init__(self, id_product, photo=None,
                  price=None, quantity=None, promotion=None):
