@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Column, DateTime, ForeignKey, text
+from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
 
 from db.base import db_gino
 
@@ -21,7 +21,7 @@ class Customer(db_gino.Model):
 
 class Product(db_gino.Model):
     __tablename__ = "products"
-    id_product = Column(Integer, primary_key=True, server_default=text("(nextval('products_id_seq') + 100)"))
+    id_product = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50))
     category = Column(String(50))
     sub_category = Column(String(50))
@@ -39,7 +39,7 @@ class Product(db_gino.Model):
 
 class Order(db_gino.Model):
     __tablename__ = "orders"
-    id_order = Column(Integer, primary_key=True, autoincrement=True, default=100000)
+    id_order = Column(Integer, primary_key=True, autoincrement=True)
     customer_id = Column(Integer, ForeignKey("customers.id_telegram"))
     order_date = Column(DateTime)
 
