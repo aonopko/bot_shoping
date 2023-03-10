@@ -52,6 +52,11 @@ async def delete_new_item(id_product):
     await product.update(new_product=None).apply()
 
 
+async def get_promotion():
+    promotion = await Product.query.where(Product.promotion == Product.promotion).gino.all()
+    return promotion
+
+
 class UpdateData:
     def __init__(self, id_product, photo=None,
                  price=None, quantity=None, promotion=None):

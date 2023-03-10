@@ -1,5 +1,3 @@
-import types
-from loguru import logger
 from aiogram.types import Message, InputMediaPhoto
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import Text

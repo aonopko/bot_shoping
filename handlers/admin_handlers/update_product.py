@@ -123,9 +123,12 @@ async def update_quantity(m: Message, state: FSMContext):
 async def add_promotion(m: Message, state: FSMContext):
     async with state.proxy() as data:
         if data:
-            button = InlineKeyboardButton(text="Додати акцію", callback_data="yes")
-            button_1 = InlineKeyboardButton(text="ВІдмінити", callback_data="no")
-            button_2 = InlineKeyboardButton(text="Видалити акцію", callback_data="delete")
+            button = InlineKeyboardButton(text="Додати акцію",
+                                          callback_data="yes")
+            button_1 = InlineKeyboardButton(text="ВІдмінити",
+                                            callback_data="no")
+            button_2 = InlineKeyboardButton(text="Видалити акцію",
+                                            callback_data="delete")
             keyboard = InlineKeyboardMarkup()
             keyboard.add(button, button_2, button_1)
             await m.answer("Меню акції", reply_markup=keyboard)
@@ -179,9 +182,12 @@ async def del_promotion(call: CallbackQuery, state: FSMContext):
 async def add_new_item(m: Message, state: FSMContext):
     async with state.proxy() as data:
         if data:
-            button = InlineKeyboardButton(text="Додати новинку", callback_data="yes_item")
-            button_1 = InlineKeyboardButton(text="ВІдмінити", callback_data="no_item")
-            button_2 = InlineKeyboardButton(text="Видалити новинку", callback_data="delete_item")
+            button = InlineKeyboardButton(text="Додати новинку",
+                                          callback_data="yes_item")
+            button_1 = InlineKeyboardButton(text="ВІдмінити",
+                                            callback_data="no_item")
+            button_2 = InlineKeyboardButton(text="Видалити новинку",
+                                            callback_data="delete_item")
             keyboard = InlineKeyboardMarkup()
             keyboard.add(button, button_2, button_1)
             await m.answer("Меню новинки", reply_markup=keyboard)
