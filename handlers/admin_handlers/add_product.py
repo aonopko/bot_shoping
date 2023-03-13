@@ -15,7 +15,6 @@ async def add_id(m: Message):
 
 
 async def load_name(m: Message, state: FSMContext):
-    await m.answer("OK")
     async with state.proxy() as data:
         text = m.text.isdigit()
         if text is True:
@@ -34,7 +33,21 @@ async def load_category(m: Message, state: FSMContext):
         else:
             data["category"] = m.text
             await AddProduct.next()
-            await m.answer("\U0000231B Додайте підкатегорію")
+            await m.answer("Додайте код категорії:\n"
+                           "Теплі - 10 \n"
+                           "Літні - 15 \n"
+                           "Новорічні - 20 \n")
+
+
+async def load_category_code(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        try:
+            data["category_code"] = int(m.text)
+        except ValueError:
+            await m.reply("\U0000203C Потрібно ввести число")
+        else:
+            await AddProduct.next()
+            await m.answer("\U0000231B Додайте під-категорію")
 
 
 async def load_sub_category(m: Message, state: FSMContext):
@@ -44,6 +57,20 @@ async def load_sub_category(m: Message, state: FSMContext):
             await m.reply("\U0000203C Потрібно ввести буквами")
         else:
             data["sub_category"] = m.text
+            await AddProduct.next()
+            await m.answer("Додайте код під-категорії:"
+                           "Чоловічі - 25"
+                           "Літні - 30" 
+                           "Новорічні - 35")
+
+
+async def load_sub_category_code(m: Message, state: FSMContext):
+    async with state.proxy() as data:
+        try:
+            data["sub_category_code"] = int(m.text)
+        except ValueError:
+            await m.reply("\U0000203C Потрібно ввести число")
+        else:
             await AddProduct.next()
             await m.answer("\U0000231B Додайте ціну товара")
 
@@ -92,8 +119,12 @@ def register_add_product_handlers(dp: Dispatcher):
                                 state=AddProduct.name)
     dp.register_message_handler(load_category,
                                 state=AddProduct.category)
+    dp.register_message_handler(load_category_code,
+                                state=AddProduct.category_code)
     dp.register_message_handler(load_sub_category,
                                 state=AddProduct.sub_category)
+    dp.register_message_handler(load_sub_category_code,
+                                state=AddProduct.sub_category_code)
     dp.register_message_handler(load_price,
                                 state=AddProduct.price)
     dp.register_message_handler(load_quantity,

@@ -67,7 +67,7 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(catalog_button, text=["Каталог"],
                                 state="*")
-    dp.register_message_handler(hot_socks, text=["Теплі"],
+    dp.register_message_handler(hot_socks, text=["\U000026C4 Теплі"],
                                 state="*")
     dp.register_message_handler(summer_socks, text=["Літні"],
                                 state="*")
