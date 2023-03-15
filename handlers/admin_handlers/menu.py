@@ -1,7 +1,6 @@
 from aiogram import Dispatcher
 from aiogram.types import Message
-from aiogram.dispatcher import FSMContext
-from keyboards.default.admin_keyboard import admin_menu, update_product
+from keyboards.default.admin_keyboard import admin_menu
 from filters.bot_filter import CheckAdmin
 
 

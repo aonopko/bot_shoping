@@ -34,20 +34,20 @@ async def load_category(m: Message, state: FSMContext):
             data["category"] = m.text
             await AddProduct.next()
             await m.answer("Додайте код категорії:\n"
-                           "Теплі - 10 \n"
-                           "Літні - 15 \n"
-                           "Новорічні - 20 \n")
+                           "Теплі - H \n"
+                           "Літні - S \n"
+                           "Новорічні - NY \n")
 
 
 async def load_category_code(m: Message, state: FSMContext):
     async with state.proxy() as data:
         try:
-            data["category_code"] = int(m.text)
+            data["category_code"] = m.text
         except ValueError:
             await m.reply("\U0000203C Потрібно ввести число")
         else:
             await AddProduct.next()
-            await m.answer("\U0000231B Додайте під-категорію")
+            await m.answer("Додайте під-категорію")
 
 
 async def load_sub_category(m: Message, state: FSMContext):
@@ -58,16 +58,16 @@ async def load_sub_category(m: Message, state: FSMContext):
         else:
             data["sub_category"] = m.text
             await AddProduct.next()
-            await m.answer("Додайте код під-категорії:"
-                           "Чоловічі - 25"
-                           "Літні - 30" 
-                           "Новорічні - 35")
+            await m.answer("Додайте код під категорії:\n"
+                           "Чоловічі - M \n"
+                           "Жіночі - W \n"
+                           "Дитячі - CH \n")
 
 
 async def load_sub_category_code(m: Message, state: FSMContext):
     async with state.proxy() as data:
         try:
-            data["sub_category_code"] = int(m.text)
+            data["sub_category_code"] = m.text
         except ValueError:
             await m.reply("\U0000203C Потрібно ввести число")
         else:

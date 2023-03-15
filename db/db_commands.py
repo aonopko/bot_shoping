@@ -57,6 +57,7 @@ async def get_promotion():
     return promotion
 
 
+
 class UpdateData:
     def __init__(self, id_product, photo=None,
                  price=None, quantity=None, promotion=None):
@@ -77,5 +78,3 @@ class UpdateData:
     async def update_db_quantity(self, id_product, quantity):
         product = await Product.get(id_product)
         await product.update(quantity=quantity).apply()
-
-
