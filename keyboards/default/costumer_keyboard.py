@@ -18,7 +18,7 @@ main_menu = ReplyKeyboardMarkup(
 categories = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Теплі"),
+            KeyboardButton(text="\U000026C4 Теплі"),
             KeyboardButton(text="Літні"),
             KeyboardButton(text="Новорічні")
         ],
