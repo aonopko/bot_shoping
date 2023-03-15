@@ -12,4 +12,3 @@ async def admin_check(m: Message):
 
 def register_admin_handlers(dp: Dispatcher):
     dp.register_message_handler(admin_check, CheckAdmin(), commands=["admin"], state="*")
-
