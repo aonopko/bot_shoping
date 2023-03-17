@@ -19,7 +19,7 @@ categories = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text="\U000026C4 Теплі"),
-            KeyboardButton(text="Літні"),
+            KeyboardButton(text="\U00002600 Літні"),
             KeyboardButton(text="Новорічні")
         ],
         [

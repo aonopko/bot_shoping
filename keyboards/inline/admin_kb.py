@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from keyboards.inline.callback_datas import add_callback, delete_callback
+from keyboards.inline.inline_keyboards import add_callback, delete_callback
 
 add_product = InlineKeyboardMarkup(row_width=2,
                                    inline_keyboard=[

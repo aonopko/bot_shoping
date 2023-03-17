@@ -2,6 +2,7 @@ from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, C
 from aiogram import Dispatcher
 from loguru import logger
 
+from keyboards.inline.inline_keyboards import buy_button
 from keyboards.default.costumer_keyboard import main_menu, categories
 from db.db_commands import get_promotion
 
@@ -51,15 +52,16 @@ async def new_year_socks(m: Message):
 
 
 async def customer_promotion(m: Message):
-    button = InlineKeyboardButton(text="Купити", callback_data="cust_prom")
-    keyboard = InlineKeyboardMarkup()
-    keyboard.add(button)
     promotion = await get_promotion()
-    for i in promotion:
-        await m.answer_photo(i.photo, f"{i.name},\n"
-                                      f"{i.category},\n"
-                                      f"{i.sub_category},\n"
-                                      f"{i.price},\n", reply_markup=keyboard)
+    if promotion:
+        for i in promotion:
+            await m.answer_photo(i.photo, f"{i.name},\n"
+                                          f"{i.category},\n"
+                                          f"{i.sub_category},\n"
+                                          f"{i.price},\n",
+                                 reply_markup=await buy_button())
+    else:
+        await m.answer("Зараз акції не має")
 
 
 def register_costumer_handlers(dp: Dispatcher):
@@ -69,7 +71,7 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(hot_socks, text=["\U000026C4 Теплі"],
                                 state="*")
-    dp.register_message_handler(summer_socks, text=["Літні"],
+    dp.register_message_handler(summer_socks, text=["\U00002600 Літні"],
                                 state="*")
     dp.register_message_handler(new_year_socks, text=["Новорічні"],
                                 state="*")

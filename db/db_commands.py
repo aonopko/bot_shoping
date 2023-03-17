@@ -1,3 +1,4 @@
+from operator import and_
 
 from models.db_models import Admins, Product
 
@@ -56,6 +57,12 @@ async def get_promotion():
     promotion = await Product.query.where(Product.promotion == Product.promotion).gino.all()
     return promotion
 
+
+async def get_socks(category_code: str, sub_category_code: str):
+    hot_man_socks = await Product.query.where(and_(
+        Product.category_code == category_code,
+        Product.sub_category_code == sub_category_code)).gino.all()
+    return hot_man_socks
 
 
 class UpdateData:
