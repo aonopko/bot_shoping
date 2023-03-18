@@ -20,14 +20,14 @@ categories = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="\U000026C4 Теплі"),
             KeyboardButton(text="\U00002600 Літні"),
-            KeyboardButton(text="Новорічні")
+            KeyboardButton(text="\U00002744 Новорічні")
         ],
         [
-            KeyboardButton(text="Новинки"),
-            KeyboardButton(text="Акція"),
+            KeyboardButton(text="\U0001f195 Новинки"),
+            KeyboardButton(text="\U0001F48E Акція"),
         ],
         [
-            KeyboardButton(text="Назад"),
+            KeyboardButton(text="\U000021A9 Назад"),
         ],
     ], resize_keyboard=True
 )

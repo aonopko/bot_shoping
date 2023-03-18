@@ -1,10 +1,15 @@
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from aiogram import Dispatcher
-from loguru import logger
 
 from keyboards.inline.customer_kb import buy_button
 from keyboards.default.costumer_keyboard import main_menu, categories
 from db.db_commands import get_promotion, get_new_product
+from keyboards.default.costumer_keyboard import main_menu
+
+
+async def back(m: Message):
+    await m.answer(text="Панель адміна",
+                   reply_markup=main_menu)
 
 
 async def costumer_start(m: Message):
@@ -78,6 +83,8 @@ async def customer_new_product(m: Message):
 
 
 def register_costumer_handlers(dp: Dispatcher):
+    dp.register_message_handler(back, text=['\U000021A9 Назад'],
+                                state="*")
     dp.register_message_handler(costumer_start, commands=["start"],
                                 state="*")
     dp.register_message_handler(catalog_button, text=["Каталог"],
@@ -88,7 +95,7 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(new_year_socks, text=["Новорічні"],
                                 state="*")
-    dp.register_message_handler(customer_promotion, text=["Акція"],
+    dp.register_message_handler(customer_promotion, text=["\U0001F48E Акція"],
                                 state="*")
-    dp.register_message_handler(customer_new_product, text=["Новинки"],
+    dp.register_message_handler(customer_new_product, text=["\U0001f195 Новинки"],
                                 state="*")
