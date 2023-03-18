@@ -58,6 +58,11 @@ async def get_promotion():
     return promotion
 
 
+async def get_new_product():
+    new_product = await Product.query.where(Product.new_product == Product.new_product).gino.all()
+    return new_product
+
+
 async def get_socks(category_code: str, sub_category_code: str):
     hot_man_socks = await Product.query.where(and_(
         Product.category_code == category_code,

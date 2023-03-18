@@ -7,6 +7,7 @@ from aiogram.dispatcher import FSMContext
 from filters.bot_filter import CheckAdmin
 from db.db_commands import get_item, get_all_photo
 from states.admin_state import GetProduct
+from keyboards.inline.customer_kb import buy_button
 
 
 async def id_item(m: Message):

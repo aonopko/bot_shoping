@@ -2,9 +2,9 @@ from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, C
 from aiogram import Dispatcher
 from loguru import logger
 
-from keyboards.inline.inline_keyboards import buy_button
+from keyboards.inline.customer_kb import buy_button
 from keyboards.default.costumer_keyboard import main_menu, categories
-from db.db_commands import get_promotion
+from db.db_commands import get_promotion, get_new_product
 
 
 async def costumer_start(m: Message):
@@ -64,6 +64,19 @@ async def customer_promotion(m: Message):
         await m.answer("Зараз акції не має")
 
 
+async def customer_new_product(m: Message):
+    promotion = await get_new_product()
+    if promotion:
+        for i in promotion:
+            await m.answer_photo(i.photo, f"{i.name},\n"
+                                          f"{i.category},\n"
+                                          f"{i.sub_category},\n"
+                                          f"{i.price},\n",
+                                 reply_markup=await buy_button())
+    else:
+        await m.answer("Зараз новинок не має")
+
+
 def register_costumer_handlers(dp: Dispatcher):
     dp.register_message_handler(costumer_start, commands=["start"],
                                 state="*")
@@ -76,4 +89,6 @@ def register_costumer_handlers(dp: Dispatcher):
     dp.register_message_handler(new_year_socks, text=["Новорічні"],
                                 state="*")
     dp.register_message_handler(customer_promotion, text=["Акція"],
+                                state="*")
+    dp.register_message_handler(customer_new_product, text=["Новинки"],
                                 state="*")

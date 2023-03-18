@@ -1,12 +1,10 @@
-from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+from aiogram.types import CallbackQuery
 from aiogram import Dispatcher
 from loguru import logger
 
 
-from keyboards.default.costumer_keyboard import main_menu, categories
-from keyboards.inline.inline_keyboards import buy_button
+from keyboards.inline.customer_kb import buy_button
 from db.db_commands import get_socks
-from models.db_models import Product
 
 
 async def man_hot_socks(call: CallbackQuery):

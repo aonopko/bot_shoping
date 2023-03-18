@@ -6,9 +6,9 @@ from db.db_commands import get_socks
 from keyboards.inline.customer_kb import buy_button
 
 
-async def child_hot_socks(call: CallbackQuery):
+async def woman_hot_socks(call: CallbackQuery):
     hot_socks = await get_socks(category_code="H",
-                                sub_category_code="CH")
+                                sub_category_code="W")
     if hot_socks:
         for i in hot_socks:
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
@@ -21,9 +21,9 @@ async def child_hot_socks(call: CallbackQuery):
     await call.answer()
 
 
-async def child_summer_socks(call: CallbackQuery):
+async def woman_summer_socks(call: CallbackQuery):
     hot_socks = await get_socks(category_code="S",
-                                sub_category_code="CH")
+                                sub_category_code="W")
     if hot_socks:
         for i in hot_socks:
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
@@ -36,9 +36,9 @@ async def child_summer_socks(call: CallbackQuery):
     await call.answer()
 
 
-async def child_new_year_socks(call: CallbackQuery):
+async def woman_new_year_socks(call: CallbackQuery):
     hot_socks = await get_socks(category_code="NY",
-                                sub_category_code="CH")
+                                sub_category_code="W")
     if hot_socks:
         for i in hot_socks:
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
@@ -51,10 +51,10 @@ async def child_new_year_socks(call: CallbackQuery):
     await call.answer()
 
 
-def register_child_socks(dp: Dispatcher):
-    dp.register_callback_query_handler(child_hot_socks,
-                                       text="hot_child")
-    dp.register_callback_query_handler(child_summer_socks,
-                                       text="summer_child")
-    dp.register_callback_query_handler(child_new_year_socks,
-                                       text="new_year_child")
+def register_woman_socks(dp: Dispatcher):
+    dp.register_callback_query_handler(woman_hot_socks,
+                                       text="hot_woman")
+    dp.register_callback_query_handler(woman_summer_socks,
+                                       text="summer_woman")
+    dp.register_callback_query_handler(woman_new_year_socks,
+                                       text="new_year_woman")
