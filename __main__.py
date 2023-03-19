@@ -1,4 +1,6 @@
 import asyncio
+
+import aiogram
 from loguru import logger
 
 from aiogram import Bot, Dispatcher
@@ -25,7 +27,7 @@ async def main():
     await db_gino.set_bind(f"postgresql://{config.db.user}:{config.db.password}@"
                            f"{config.db.host}/{config.db.db_name}")
     logger.info("Connect to BD")
-    storage = RedisStorage2() if config.bot.use_redis else MemoryStorage()
+    storage = MemoryStorage()
     bot = Bot(config.bot.token, parse_mode="HTML")
     dp = Dispatcher(bot, storage=storage)
     logger.info("Bot is starting")

@@ -27,7 +27,7 @@ async def del_id(m: Message, state: FSMContext):
                 await m.reply("\U0000203C Такого товару не існує")
             else:
                 await m.answer("Товар видалено")
-        await state.finish()
+            await state.finish()
 
 
 def register_del_product_hendlers(dp: Dispatcher):

@@ -93,7 +93,7 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(summer_socks, text=["\U00002600 Літні"],
                                 state="*")
-    dp.register_message_handler(new_year_socks, text=["Новорічні"],
+    dp.register_message_handler(new_year_socks, text=["\U00002744 Новорічні"],
                                 state="*")
     dp.register_message_handler(customer_promotion, text=["\U0001F48E Акція"],
                                 state="*")
