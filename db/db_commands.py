@@ -1,6 +1,6 @@
 from operator import and_
 
-from models.db_models import Admins, Product
+from models.db_models import Admins, Product, Customer
 
 
 async def get_admin(user_id):
@@ -11,6 +11,11 @@ async def get_admin(user_id):
 async def add_item(**kwargs):
     new_item = await Product(**kwargs).create()
     return new_item
+
+
+async def add_user(**kwargs):
+    user = await Customer(**kwargs).create()
+    return user
 
 
 async def del_item(id_product):

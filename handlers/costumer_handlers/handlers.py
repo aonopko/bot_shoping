@@ -2,8 +2,8 @@ from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, C
 from aiogram import Dispatcher
 
 from keyboards.inline.customer_kb import buy_button
-from keyboards.default.costumer_keyboard import main_menu, categories
-from db.db_commands import get_promotion, get_new_product
+from keyboards.default.costumer_keyboard import categories
+from db.db_commands import get_promotion, get_new_product, add_user
 from keyboards.default.costumer_keyboard import main_menu
 
 
@@ -13,6 +13,11 @@ async def back(m: Message):
 
 
 async def costumer_start(m: Message):
+    user = {}
+    user['name'] = m.from_user.username
+    user["id_telegram"] = m.from_user.id
+    await add_user(**user)
+    await m.answer(f"{user}")
     await m.answer("Ваше меню", reply_markup=main_menu)
 
 

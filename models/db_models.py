@@ -16,7 +16,6 @@ class Customer(db_gino.Model):
     id_telegram = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
     phone = Column(Integer, unique=True)
-    email = Column(String(255), unique=True)
 
 
 class Product(db_gino.Model):
