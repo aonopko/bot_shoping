@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
+import datetime
 
 from db.base import db_gino
 
@@ -42,7 +43,7 @@ class Order(db_gino.Model):
     __tablename__ = "orders"
     id_order = Column(Integer, primary_key=True, autoincrement=True)
     customer_id = Column(Integer, ForeignKey("customers.id_telegram"))
-    order_date = Column(DateTime)
+    order_date = Column(DateTime(), default=datetime.datetime.utcnow)
 
 
 class OrderProduct(db_gino.Model):

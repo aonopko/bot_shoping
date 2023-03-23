@@ -1,10 +1,12 @@
 from operator import and_
 
-from models.db_models import Admins, Product, Customer
+from models.db_models import Admins, Product, Customer,\
+    Order, OrderProduct
 
 
 async def get_admin(user_id):
-    admins = await Admins.query.where(Admins.id_telegram == user_id).gino.first()
+    admins = await Admins.query.where\
+        (Admins.id_telegram == user_id).gino.first()
     return admins
 
 
@@ -18,13 +20,24 @@ async def add_user(**kwargs):
     return user
 
 
+async def add_order(**kwargs):
+    order = await Order(**kwargs).create()
+    return order
+
+
+async def add_order_product(**kwargs):
+    order_product = await OrderProduct(**kwargs)
+    return order_product
+
+
 async def del_item(id_product):
     item = await Product.get(id_product)
     await item.delete()
 
 
 async def get_item(id_product):
-    item = await Product.query.where(Product.id_product == id_product).gino.first()
+    item = await Product.query.where\
+        (Product.id_product == id_product).gino.first()
     return item
 
 
@@ -34,7 +47,8 @@ async def get_all_items():
 
 
 async def get_all_photo():
-    photo = await Product.query.where(Product.photo == Product.photo).gino.all()
+    photo = await Product.query.where\
+        (Product.photo == Product.photo).gino.all()
     return photo
 
 
@@ -59,12 +73,14 @@ async def delete_new_item(id_product):
 
 
 async def get_promotion():
-    promotion = await Product.query.where(Product.promotion == Product.promotion).gino.all()
+    promotion = await Product.query.where\
+        (Product.promotion == Product.promotion).gino.all()
     return promotion
 
 
 async def get_new_product():
-    new_product = await Product.query.where(Product.new_product == Product.new_product).gino.all()
+    new_product = await Product.query.where\
+        (Product.new_product == Product.new_product).gino.all()
     return new_product
 
 
@@ -73,6 +89,11 @@ async def get_socks(category_code: str, sub_category_code: str):
         Product.category_code == category_code,
         Product.sub_category_code == sub_category_code)).gino.all()
     return hot_man_socks
+
+
+async def customer_basket(id_telegram):
+    basket = await Customer.join(Order).select().where\
+        (Customer.id_telegram == Order.id_order)
 
 
 class UpdateData:

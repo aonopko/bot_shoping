@@ -1,9 +1,12 @@
-from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup,\
+    CallbackQuery
 from aiogram import Dispatcher
+from asyncpg.exceptions import UniqueViolationError
 
 from keyboards.inline.customer_kb import buy_button
 from keyboards.default.costumer_keyboard import categories
-from db.db_commands import get_promotion, get_new_product, add_user
+from db.db_commands import get_promotion, get_new_product,\
+    add_user, add_order
 from keyboards.default.costumer_keyboard import main_menu
 
 
@@ -13,12 +16,13 @@ async def back(m: Message):
 
 
 async def costumer_start(m: Message):
-    user = {}
-    user['name'] = m.from_user.username
-    user["id_telegram"] = m.from_user.id
-    await add_user(**user)
-    await m.answer(f"{user}")
-    await m.answer("Ваше меню", reply_markup=main_menu)
+    user = {'name': m.from_user.username,
+            "id_telegram": m.from_user.id}
+    try:
+        await add_user(**user)
+    except UniqueViolationError:
+        await m.answer(f"Привіт {user.get('name')}!!!")
+    await m.answer("Ваше меню:", reply_markup=main_menu)
 
 
 async def catalog_button(m: Message):
@@ -87,6 +91,13 @@ async def customer_new_product(m: Message):
         await m.answer("Зараз новинок не має")
 
 
+async def buy(call: CallbackQuery):
+    order = {"customer_id": call.from_user.id}
+    await add_order(**order)
+    await call.message.answer("Товар додано у кошик")
+    await call.answer()
+
+
 def register_costumer_handlers(dp: Dispatcher):
     dp.register_message_handler(back, text=['\U000021A9 Назад'],
                                 state="*")
@@ -104,3 +115,5 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(customer_new_product, text=["\U0001f195 Новинки"],
                                 state="*")
+    dp.register_callback_query_handler(buy, text="cust_prom")
+
