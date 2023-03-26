@@ -3,7 +3,6 @@ from aiogram import Dispatcher
 
 
 from db.db_commands import get_socks
-from keyboards.inline.customer_kb import buy_button
 
 
 async def woman_hot_socks(call: CallbackQuery):

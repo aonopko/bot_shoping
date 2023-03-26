@@ -1,14 +1,19 @@
+from asyncio import sleep
+
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup,\
     CallbackQuery
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
+from aiogram.utils.callback_data import CallbackData
 from asyncpg.exceptions import UniqueViolationError
 
-from keyboards.inline.customer_kb import buy_button
 from keyboards.default.costumer_keyboard import categories
 from db.db_commands import get_promotion, get_new_product,\
     add_user, add_order
 from keyboards.default.costumer_keyboard import main_menu
+
+
+buy_product = CallbackData("id_product")
 
 
 async def back(m: Message):
@@ -70,34 +75,40 @@ async def customer_promotion(m: Message):
     promotion = await get_promotion()
     if promotion:
         for i in promotion:
+            button = InlineKeyboardButton(text="Купити", callback_data=buy_product.new(id_product=i.id_product))
+            keyboard = InlineKeyboardMarkup()
+            keyboard.add(button)
             await m.answer_photo(i.photo, f"{i.name},\n"
                                           f"{i.category},\n"
                                           f"{i.sub_category},\n"
                                           f"{i.price},\n"
                                           f"{i.id_product}",
-                                 reply_markup=await buy_button())
+                                 reply_markup=keyboard)
     else:
         await m.answer("Зараз акції не має")
+    await sleep(0.3)
 
 
 async def customer_new_product(m: Message):
     new_item = await get_new_product()
     if new_item:
         for i in new_item:
+            button = InlineKeyboardButton(text="Купити", callback_data=buy_product.new(i.id_product))
+            keyboard = InlineKeyboardMarkup()
+            keyboard.add(button)
             await m.answer_photo(i.photo, f"{i.name},\n"
                                           f"{i.category},\n"
                                           f"{i.sub_category},\n"
                                           f"{i.price},\n",
-                                 reply_markup=await buy_button())
+                                 reply_markup=keyboard)
     else:
         await m.answer("Зараз новинок не має")
 
 
-async def buy(call: CallbackQuery):
-    data = {}
-    data["customer_id"] = call.from_user.id
+async def buy(call: CallbackQuery, callback_data: dict):
+    product_id = callback_data.get("id_product")
     await call.message.answer("Товар додано у кошик")
-    await call.answer(f"{data}")
+    await call.answer(f"{product_id}")
 
 
 def register_costumer_handlers(dp: Dispatcher):
@@ -117,5 +128,4 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(customer_new_product, text=["\U0001f195 Новинки"],
                                 state="*")
-    dp.register_callback_query_handler(buy, text="cust_prom", state="*")
-
+    dp.register_callback_query_handler(buy, buy_product.filter())

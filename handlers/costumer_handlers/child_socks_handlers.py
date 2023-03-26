@@ -3,7 +3,6 @@ from aiogram import Dispatcher
 
 
 from db.db_commands import get_socks
-from keyboards.inline.customer_kb import buy_button
 
 
 async def child_hot_socks(call: CallbackQuery):
@@ -14,8 +13,7 @@ async def child_hot_socks(call: CallbackQuery):
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
-                                                     f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button())
+                                                     f"- Ціна {i.price} грн.")
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
@@ -29,8 +27,7 @@ async def child_summer_socks(call: CallbackQuery):
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
-                                                     f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button())
+                                                     f"- Ціна {i.price} грн.")
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
@@ -44,8 +41,7 @@ async def child_new_year_socks(call: CallbackQuery):
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
-                                                     f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button())
+                                                     f"- Ціна {i.price} грн.")
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
