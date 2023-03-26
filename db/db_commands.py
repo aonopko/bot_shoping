@@ -26,7 +26,7 @@ async def add_order(**kwargs):
 
 
 async def add_order_product(**kwargs):
-    order_product = await OrderProduct(**kwargs)
+    order_product = OrderProduct(**kwargs)
     return order_product
 
 

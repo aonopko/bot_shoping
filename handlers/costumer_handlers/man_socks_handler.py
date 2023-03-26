@@ -15,7 +15,7 @@ async def man_hot_socks(call: CallbackQuery):
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button(i.id_product))
+                                            reply_markup=await buy_button())
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()

@@ -1,6 +1,7 @@
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup,\
     CallbackQuery
 from aiogram import Dispatcher
+from aiogram.dispatcher import FSMContext
 from asyncpg.exceptions import UniqueViolationError
 
 from keyboards.inline.customer_kb import buy_button
@@ -72,16 +73,17 @@ async def customer_promotion(m: Message):
             await m.answer_photo(i.photo, f"{i.name},\n"
                                           f"{i.category},\n"
                                           f"{i.sub_category},\n"
-                                          f"{i.price},\n",
+                                          f"{i.price},\n"
+                                          f"{i.id_product}",
                                  reply_markup=await buy_button())
     else:
         await m.answer("Зараз акції не має")
 
 
 async def customer_new_product(m: Message):
-    promotion = await get_new_product()
-    if promotion:
-        for i in promotion:
+    new_item = await get_new_product()
+    if new_item:
+        for i in new_item:
             await m.answer_photo(i.photo, f"{i.name},\n"
                                           f"{i.category},\n"
                                           f"{i.sub_category},\n"
@@ -92,10 +94,10 @@ async def customer_new_product(m: Message):
 
 
 async def buy(call: CallbackQuery):
-    order = {"customer_id": call.from_user.id}
-    await add_order(**order)
+    data = {}
+    data["customer_id"] = call.from_user.id
     await call.message.answer("Товар додано у кошик")
-    await call.answer()
+    await call.answer(f"{data}")
 
 
 def register_costumer_handlers(dp: Dispatcher):
@@ -115,5 +117,5 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(customer_new_product, text=["\U0001f195 Новинки"],
                                 state="*")
-    dp.register_callback_query_handler(buy, text="cust_prom")
+    dp.register_callback_query_handler(buy, text="cust_prom", state="*")
 
