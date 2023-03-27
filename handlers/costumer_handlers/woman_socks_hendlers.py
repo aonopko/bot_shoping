@@ -3,6 +3,7 @@ from aiogram import Dispatcher
 
 
 from db.db_commands import get_socks
+from keyboards.inline.customer_kb import buy_button
 
 
 async def woman_hot_socks(call: CallbackQuery):
@@ -14,7 +15,7 @@ async def woman_hot_socks(call: CallbackQuery):
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button())
+                                            reply_markup=await buy_button(id_product=i.id_product))
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
@@ -29,7 +30,7 @@ async def woman_summer_socks(call: CallbackQuery):
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button())
+                                            reply_markup=await buy_button(id_product=i.id_product))
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
@@ -44,7 +45,7 @@ async def woman_new_year_socks(call: CallbackQuery):
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",
-                                            reply_markup=await buy_button())
+                                            reply_markup=await buy_button(id_product=i.id_product))
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()

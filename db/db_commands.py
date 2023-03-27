@@ -2,6 +2,7 @@ from operator import and_
 
 from models.db_models import Admins, Product, Customer,\
     Order, OrderProduct
+from .core import db_gino
 
 
 async def get_admin(user_id):
@@ -28,6 +29,13 @@ async def add_order(**kwargs):
 async def add_order_product(**kwargs):
     order_product = OrderProduct(**kwargs)
     return order_product
+
+
+async def add_values_to_tables():
+    async with db_gino.transaction():
+        order = await Order.create(**kwargs)
+        order_product = await OrderProduct.create(**kwargs)
+    return order, order_product
 
 
 async def del_item(id_product):

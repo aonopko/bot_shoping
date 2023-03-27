@@ -34,9 +34,10 @@ class Product(db_gino.Model):
     photo = Column(String(250))
 
     def __str__(self):
-        return f'{self.id_product}, {self.name},' \
-               f'{self.category}, {self.sub_category}' \
-               f'{self.price}, {self.quantity}, {self.photo}'
+        return f'{self.id_product}, {self.name}, ' \
+               f'{self.category}, {self.sub_category}, ' \
+               f'{self.price}, {self.quantity}, {self.photo}, ' \
+               f'{self.promotion}, {self.new_product}'
 
 
 class Order(db_gino.Model):

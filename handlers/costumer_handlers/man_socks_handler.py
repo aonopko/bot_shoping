@@ -3,6 +3,7 @@ from aiogram import Dispatcher
 
 
 from db.db_commands import get_socks
+from keyboards.inline.customer_kb import buy_button
 
 
 async def man_hot_socks(call: CallbackQuery):
@@ -13,7 +14,8 @@ async def man_hot_socks(call: CallbackQuery):
             await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
-                                                     f"- Ціна {i.price} грн.")
+                                                     f"- Ціна {i.price} грн.",
+                                            reply_markup=await buy_button(id_product=i.id_product))
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
@@ -26,7 +28,8 @@ async def man_summer_socks(call: CallbackQuery):
         for i in hot_socks:
             await call.message.answer_photo(i.photo, f"{i.name}\n"
                                                      f"{i.category}\n"
-                                                     f"{i.sub_category}")
+                                                     f"{i.sub_category}",
+                                            reply_markup=await buy_button(id_product=i.id_product))
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
@@ -39,7 +42,8 @@ async def man_new_year_socks(call: CallbackQuery):
         for i in hot_socks:
             await call.message.answer_photo(i.photo, f"{i.name}\n"
                                                      f"{i.category}\n"
-                                                     f"{i.sub_category}")
+                                                     f"{i.sub_category}",
+                                            reply_markup=await buy_button(id_product=i.id_product))
     else:
         await call.message.answer("Зараз такого товару не існує")
     await call.answer()
