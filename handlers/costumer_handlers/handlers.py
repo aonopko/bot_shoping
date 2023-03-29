@@ -1,5 +1,4 @@
-from asyncio import sleep
-
+from aiogram.dispatcher import FSMContext
 from loguru import logger
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup,\
     CallbackQuery
@@ -11,6 +10,7 @@ from db.db_commands import get_promotion, get_new_product,\
     add_user, add_values_to_tables, get_item
 from keyboards.default.costumer_keyboard import main_menu
 from keyboards.inline.customer_kb import buy_button, buy_product
+from states.customers_state import ProductQuantity
 
 
 async def back(m: Message):
@@ -95,13 +95,14 @@ async def customer_new_product(m: Message):
         await m.answer("Зараз новинок не має")
 
 
-async def buy(call: CallbackQuery, callback_data: dict):
-    product_id = int(callback_data.get("id_product"))
-    customer_id = call.from_user.id
-    logger.info(await get_item(id_product=product_id))
-    logger.info(customer_id)
+async def buy(call: CallbackQuery, callback_data: dict, state: FSMContext):
+    async with state.proxy() as data:
+        quantity = call.message.text
+        data["product_id"] = int(callback_data.get("id_product"))
+        data["customer_id"] = call.from_user.id
+        data["quantity"] = quantity
+        logger.info(data)
     await call.message.answer("Товар додано у кошик")
-    await call.answer(f"{product_id}")
 
 
 def register_costumer_handlers(dp: Dispatcher):
@@ -121,4 +122,5 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(customer_new_product,
                                 text=["\U0001f195 Новинки"], state="*")
-    dp.register_callback_query_handler(buy, buy_product.filter())
+    dp.register_callback_query_handler(buy, buy_product.filter(),
+                                       state=ProductQuantity.quantity)
