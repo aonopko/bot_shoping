@@ -21,8 +21,8 @@ async def add_user(**kwargs):
     return user
 
 
-async def add_order(**kwargs):
-    order = await Order(**kwargs).create()
+async def add_order(customer_id):
+    order = await Order(customer_id).create()
     return order
 
 
@@ -31,11 +31,11 @@ async def add_order_product(**kwargs):
     return order_product
 
 
-async def add_values_to_tables():
-    async with db_gino.transaction():
-        order = await Order.create(**kwargs)
-        order_product = await OrderProduct.create(**kwargs)
-    return order, order_product
+# async def add_values_to_tables():
+#     async with db_gino.transaction():
+#         order = await Order.create(**kwargs)
+#         order_product = await OrderProduct.create(**kwargs)
+#     return order, order_product
 
 
 async def del_item(id_product):

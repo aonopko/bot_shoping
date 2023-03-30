@@ -5,9 +5,10 @@ from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup,\
 from aiogram import Dispatcher
 from asyncpg.exceptions import UniqueViolationError
 
+from keyboards.default.admin_keyboard import update_product
 from keyboards.default.costumer_keyboard import categories
 from db.db_commands import get_promotion, get_new_product,\
-    add_user, add_values_to_tables, get_item
+    add_user, get_item, add_order
 from keyboards.default.costumer_keyboard import main_menu
 from keyboards.inline.customer_kb import buy_button, buy_product
 from states.customers_state import ProductQuantity
@@ -95,14 +96,19 @@ async def customer_new_product(m: Message):
         await m.answer("Зараз новинок не має")
 
 
-async def buy(call: CallbackQuery, callback_data: dict, state: FSMContext):
+async def buy(call: CallbackQuery, callback_data: dict,
+              state: FSMContext):
+    product = int(callback_data.get("id_product"))
+    await ProductQuantity.quantity.set()
+    await state.update_data(
+        product_id=product,
+        customer_id=call.from_user.id
+        )
+
+
+async def enter_quantity(m: Message, state: FSMContext):
     async with state.proxy() as data:
-        quantity = call.message.text
-        data["product_id"] = int(callback_data.get("id_product"))
-        data["customer_id"] = call.from_user.id
-        data["quantity"] = quantity
         logger.info(data)
-    await call.message.answer("Товар додано у кошик")
 
 
 def register_costumer_handlers(dp: Dispatcher):
@@ -124,3 +130,5 @@ def register_costumer_handlers(dp: Dispatcher):
                                 text=["\U0001f195 Новинки"], state="*")
     dp.register_callback_query_handler(buy, buy_product.filter(),
                                        state=ProductQuantity.quantity)
+    dp.register_message_handler(enter_quantity,
+                                state=ProductQuantity.quantity)
