@@ -16,7 +16,6 @@ class Customer(db_gino.Model):
     __tablename__ = "customers"
     id_telegram = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
-    phone = Column(Integer, unique=True)
 
 
 class Product(db_gino.Model):
@@ -38,6 +37,15 @@ class Product(db_gino.Model):
                f'{self.category}, {self.sub_category}, ' \
                f'{self.price}, {self.quantity}, {self.photo}, ' \
                f'{self.promotion}, {self.new_product}'
+
+
+class Cart(db_gino.Model):
+    __tablename__ = "cart"
+    customer_id = Column(Integer, primary_key=True)
+    product_id = Column(Integer)
+    photo = Column(String(250))
+    quantity = Column(Integer)
+    pay = Column(Integer)
 
 
 class Order(db_gino.Model):

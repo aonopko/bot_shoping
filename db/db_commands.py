@@ -22,7 +22,7 @@ async def add_user(**kwargs):
 
 
 async def add_order(customer_id):
-    order = await Order(customer_id).create()
+    order = await Order(customer_id=customer_id).create()
     return order
 
 
@@ -99,9 +99,9 @@ async def get_socks(category_code: str, sub_category_code: str):
     return hot_man_socks
 
 
-async def customer_basket(id_telegram):
-    basket = await Customer.join(Order).select().where\
-        (Customer.id_telegram == Order.id_order)
+# async def customer_basket(id_telegram):
+#     basket = await Customer.join(Order).select().where\
+#         (Customer.id_telegram == Order.id_order)
 
 
 class UpdateData:

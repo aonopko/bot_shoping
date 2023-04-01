@@ -98,17 +98,21 @@ async def customer_new_product(m: Message):
 
 async def buy(call: CallbackQuery, callback_data: dict,
               state: FSMContext):
-    product = int(callback_data.get("id_product"))
+    async with state.proxy() as data:
+        id_item = data["product_id"] = int(callback_data.get("id_product"))
+        data["item"] = await get_item(id_product=id_item)
+        id_customer = call.from_user.id
+        data["customer_id"] = id_customer
+        await call.message.answer("Додайте кількість товару")
+    logger.info(data)
     await ProductQuantity.quantity.set()
-    await state.update_data(
-        product_id=product,
-        customer_id=call.from_user.id
-        )
 
 
 async def enter_quantity(m: Message, state: FSMContext):
     async with state.proxy() as data:
+        data["quantity"] = int(m.text)
         logger.info(data)
+        await m.answer("OK")
 
 
 def register_costumer_handlers(dp: Dispatcher):
@@ -128,7 +132,6 @@ def register_costumer_handlers(dp: Dispatcher):
                                 state="*")
     dp.register_message_handler(customer_new_product,
                                 text=["\U0001f195 Новинки"], state="*")
-    dp.register_callback_query_handler(buy, buy_product.filter(),
-                                       state=ProductQuantity.quantity)
-    dp.register_message_handler(enter_quantity,
+    dp.register_callback_query_handler(buy, buy_product.filter())
+    dp.register_message_handler(enter_quantity, regexp=r"^(\d+)$",
                                 state=ProductQuantity.quantity)
