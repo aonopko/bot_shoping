@@ -8,7 +8,7 @@ from asyncpg.exceptions import UniqueViolationError
 from keyboards.default.admin_keyboard import update_product
 from keyboards.default.costumer_keyboard import categories
 from db.db_commands import get_promotion, get_new_product,\
-    add_user, get_item, add_order
+    add_user, get_item, add_cart
 from keyboards.default.costumer_keyboard import main_menu
 from keyboards.inline.customer_kb import buy_button, buy_product
 from states.customers_state import ProductQuantity
@@ -106,13 +106,23 @@ async def buy(call: CallbackQuery, callback_data: dict,
         await call.message.answer("Додайте кількість товару")
     logger.info(data)
     await ProductQuantity.quantity.set()
+    await call.answer()
 
 
 async def enter_quantity(m: Message, state: FSMContext):
     async with state.proxy() as data:
         data["quantity"] = int(m.text)
-        logger.info(data)
+        product_id = data.get("product_id")
+        customer_id = data.get("customer_id")
+        quantity = data.get("quantity")
+        item = data.get("item")
+        photo = getattr(item, "photo")
+        logger.info(getattr(item, "photo"))
+        await add_cart(customer_id, product_id,
+                       photo, quantity)
+
         await m.answer("OK")
+        await state.finish()
 
 
 def register_costumer_handlers(dp: Dispatcher):

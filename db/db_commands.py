@@ -1,8 +1,6 @@
 from operator import and_
 
-from models.db_models import Admins, Product, Customer,\
-    Order, OrderProduct
-from .core import db_gino
+from models.db_models import Admins, Product, Customer, Cart
 
 
 async def get_admin(user_id):
@@ -21,21 +19,11 @@ async def add_user(**kwargs):
     return user
 
 
-async def add_order(customer_id):
-    order = await Order(customer_id=customer_id).create()
-    return order
-
-
-async def add_order_product(**kwargs):
-    order_product = OrderProduct(**kwargs)
-    return order_product
-
-
-# async def add_values_to_tables():
-#     async with db_gino.transaction():
-#         order = await Order.create(**kwargs)
-#         order_product = await OrderProduct.create(**kwargs)
-#     return order, order_product
+async def add_cart(customer_id, product_id,
+                   photo, quantity):
+    cart = Cart(customer_id=customer_id, product_id=product_id,
+                photo=photo, quantity=quantity).create()
+    await cart
 
 
 async def del_item(id_product):
@@ -97,11 +85,6 @@ async def get_socks(category_code: str, sub_category_code: str):
         Product.category_code == category_code,
         Product.sub_category_code == sub_category_code)).gino.all()
     return hot_man_socks
-
-
-# async def customer_basket(id_telegram):
-#     basket = await Customer.join(Order).select().where\
-#         (Customer.id_telegram == Order.id_order)
 
 
 class UpdateData:

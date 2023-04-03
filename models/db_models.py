@@ -41,22 +41,8 @@ class Product(db_gino.Model):
 
 class Cart(db_gino.Model):
     __tablename__ = "cart"
-    customer_id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer)
     product_id = Column(Integer)
     photo = Column(String(250))
     quantity = Column(Integer)
-    pay = Column(Integer)
-
-
-class Order(db_gino.Model):
-    __tablename__ = "orders"
-    id_order = Column(Integer, primary_key=True, autoincrement=True)
-    customer_id = Column(Integer, ForeignKey("customers.id_telegram"))
-    order_date = Column(DateTime(), default=datetime.datetime.utcnow)
-
-
-class OrderProduct(db_gino.Model):
-    __tablename__ = "order_products"
-    order_id = Column(Integer, ForeignKey("orders.id_order"))
-    product_id = Column(Integer, ForeignKey("products.id_product"))
-    quantity = Column(Integer)
+    status_pay = Column(Integer, default=0)
