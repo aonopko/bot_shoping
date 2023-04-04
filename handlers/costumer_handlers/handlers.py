@@ -15,7 +15,7 @@ from states.customers_state import ProductQuantity
 
 
 async def back(m: Message):
-    await m.answer(text="Панель адміна",
+    await m.answer(text="Панель користувача",
                    reply_markup=main_menu)
 
 
@@ -104,7 +104,6 @@ async def buy(call: CallbackQuery, callback_data: dict,
         id_customer = call.from_user.id
         data["customer_id"] = id_customer
         await call.message.answer("Додайте кількість товару")
-    logger.info(data)
     await ProductQuantity.quantity.set()
     await call.answer()
 
@@ -117,11 +116,10 @@ async def enter_quantity(m: Message, state: FSMContext):
         quantity = data.get("quantity")
         item = data.get("item")
         photo = getattr(item, "photo")
-        logger.info(getattr(item, "photo"))
         await add_cart(customer_id, product_id,
                        photo, quantity)
 
-        await m.answer("OK")
+        await m.answer("Товар додано у кошик")
         await state.finish()
 
 

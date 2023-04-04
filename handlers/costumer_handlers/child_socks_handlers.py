@@ -11,7 +11,7 @@ async def child_hot_socks(call: CallbackQuery):
                                 sub_category_code="CH")
     if hot_socks:
         for i in hot_socks:
-            await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
+            await call.message.answer_photo(i.photo, f"  Артикул: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",
@@ -26,7 +26,7 @@ async def child_summer_socks(call: CallbackQuery):
                                 sub_category_code="CH")
     if hot_socks:
         for i in hot_socks:
-            await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
+            await call.message.answer_photo(i.photo, f"  Артикул: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",
@@ -41,7 +41,7 @@ async def child_new_year_socks(call: CallbackQuery):
                                 sub_category_code="CH")
     if hot_socks:
         for i in hot_socks:
-            await call.message.answer_photo(i.photo, f"  id: {i.id_product}\n"
+            await call.message.answer_photo(i.photo, f"  Артикул: {i.id_product}\n"
                                                      f"- {i.category}\n"
                                                      f"- {i.sub_category}\n"
                                                      f"- Ціна {i.price} грн.",

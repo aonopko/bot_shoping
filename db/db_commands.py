@@ -37,6 +37,10 @@ async def get_item(id_product):
     return item
 
 
+async def get_cart(id_product):
+    pass
+
+
 async def get_all_items():
     product = await Product.query.gino.all()
     return product
