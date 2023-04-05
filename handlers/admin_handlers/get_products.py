@@ -9,7 +9,6 @@ from db.db_commands import get_item, get_all_photo
 from states.admin_state import GetProduct
 
 
-
 async def id_item(m: Message):
     await GetProduct.id_product.set()
     await m.answer("\U0000231B Додайте id товару")

@@ -32,13 +32,16 @@ async def del_item(id_product):
 
 
 async def get_item(id_product):
-    item = await Product.query.where\
-        (Product.id_product == id_product).gino.first()
+    item = await Product.query.where(
+        Product.id_product == id_product).gino.first()
     return item
 
 
-async def get_cart(id_product):
-    pass
+async def not_paid_cart(id_customer):
+    not_paid = await Cart.query.where(and_(
+        Cart.customer_id == id_customer,
+        Cart.status_pay == 0)).gino.all()
+    return not_paid
 
 
 async def get_all_items():

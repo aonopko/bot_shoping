@@ -1,16 +1,15 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
-    [
-        KeyboardButton(text="Каталог"),
-        KeyboardButton(text="Кошик")
-    ],
-    [
-        KeyboardButton(text="Відгуки"),
-        KeyboardButton(text="Доставка")
-    ],
+        [
+            KeyboardButton(text="Каталог"),
+            KeyboardButton(text="Кошик")
+        ],
+        [
+            KeyboardButton(text="Відгуки"),
+            KeyboardButton(text="Доставка")
+        ],
     ],
     resize_keyboard=True
 )
@@ -28,6 +27,18 @@ categories = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="\U000021A9 Назад"),
+        ],
+    ], resize_keyboard=True
+)
+
+cart = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Оплочені замовлення"),
+            KeyboardButton(text="Неоплочені замовлення")
+        ],
+        [
+            KeyboardButton(text="Назад"),
         ],
     ], resize_keyboard=True
 )

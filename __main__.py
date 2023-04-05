@@ -19,6 +19,7 @@ from handlers.admin_handlers.get_products import register_get_all_items
 from handlers.costumer_handlers.man_socks_handler import register_man_socks
 from handlers.costumer_handlers.woman_socks_hendlers import register_woman_socks
 from handlers.costumer_handlers.child_socks_handlers import register_child_socks
+from handlers.costumer_handlers.cart import register_basket_hendlers
 
 
 async def main():
@@ -42,6 +43,7 @@ async def main():
     register_man_socks(dp)
     register_woman_socks(dp)
     register_child_socks(dp)
+    register_basket_hendlers(dp)
 
     try:
         await dp.start_polling()
