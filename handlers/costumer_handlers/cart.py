@@ -1,16 +1,12 @@
-from aiogram.dispatcher import FSMContext
-from loguru import logger
-from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup,\
-    CallbackQuery
-from aiogram import Dispatcher
-from asyncpg.exceptions import UniqueViolationError
 
-from keyboards.default.admin_keyboard import update_product
+from loguru import logger
+from aiogram.types import Message, InputMediaPhoto
+from aiogram import Dispatcher
+
+
 from keyboards.default.costumer_keyboard import cart
-from db.db_commands import get_promotion, get_new_product,\
-    add_user, get_item, add_cart, not_paid_cart
-from keyboards.inline.customer_kb import buy_button, buy_product, not_paid_kb
-from states.customers_state import ProductQuantity
+from db.db_commands import CustomerCart
+from keyboards.inline.customer_kb import not_paid_kb
 
 
 async def basket(m: Message):
@@ -18,11 +14,9 @@ async def basket(m: Message):
                    reply_markup=cart)
 
 
-async def not_paid(m: Message):
+async def change_order(m: Message):
     id_customer = m.from_user.id
-    logger.info(id_customer)
-    get_not_paid = await not_paid_cart(id_customer=id_customer)
-    logger.info(get_not_paid)
+    get_not_paid = await CustomerCart.not_paid_cart(id_customer=id_customer)
     for i in get_not_paid:
         logger.info(i.photo)
         await m.answer_photo(i.photo, f"Артикул {i.product_id},\n"
@@ -30,8 +24,21 @@ async def not_paid(m: Message):
                              reply_markup=await not_paid_kb())
 
 
+async def your_order(m: Message):
+    id_customer = m.from_user.id
+    order = await CustomerCart.not_paid_cart(id_customer)
+    album = []
+    logger.info(order)
+    for i in order:
+        album.append(InputMediaPhoto(i.photo, f"Артикул: {i.product_id}\n"
+                                              f"Кількість: {i.quantity}\n"
+                                              f": "))
+        logger.info(i.photo)
+    await m.answer_media_group(media=album)
 def register_basket_hendlers(dp: Dispatcher):
     dp.register_message_handler(basket, text=["Кошик"],
                                 state="*")
-    dp.register_message_handler(not_paid,
+    dp.register_message_handler(change_order,
                                 text="Неоплочені замовлення")
+    dp.register_message_handler(your_order,
+                                text="Ваше замовлення")

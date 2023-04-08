@@ -14,10 +14,10 @@ async def buy_button(id_product):
 
 
 async def not_paid_kb():
-    button = InlineKeyboardButton(text="Оплатит",
+    button = InlineKeyboardButton(text="Оплатити",
                                   callback_data="payment")
-    button1 = InlineKeyboardButton(text="Видалити товар",
+    button1 = InlineKeyboardButton(text="Видалити",
                                    callback_data="del_payment")
     pay_button = InlineKeyboardMarkup()
-    pay_button.add(pay_button, button1)
-    return button
+    pay_button.add(button, button1)
+    return pay_button

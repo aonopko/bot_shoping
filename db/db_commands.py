@@ -4,8 +4,7 @@ from models.db_models import Admins, Product, Customer, Cart
 
 
 async def get_admin(user_id):
-    admins = await Admins.query.where\
-        (Admins.id_telegram == user_id).gino.first()
+    admins = await Admins.query.where(Admins.id_telegram == user_id).gino.first()
     return admins
 
 
@@ -37,20 +36,13 @@ async def get_item(id_product):
     return item
 
 
-async def not_paid_cart(id_customer):
-    not_paid = await Cart.query.where(and_(
-        Cart.customer_id == id_customer,
-        Cart.status_pay == 0)).gino.all()
-    return not_paid
-
-
 async def get_all_items():
     product = await Product.query.gino.all()
     return product
 
 
 async def get_all_photo():
-    photo = await Product.query.where\
+    photo = await Product.query.where \
         (Product.photo == Product.photo).gino.all()
     return photo
 
@@ -76,13 +68,13 @@ async def delete_new_item(id_product):
 
 
 async def get_promotion():
-    promotion = await Product.query.where\
+    promotion = await Product.query.where \
         (Product.promotion == Product.promotion).gino.all()
     return promotion
 
 
 async def get_new_product():
-    new_product = await Product.query.where\
+    new_product = await Product.query.where \
         (Product.new_product == Product.new_product).gino.all()
     return new_product
 
@@ -103,7 +95,8 @@ class UpdateData:
         self.quantity = quantity
         self.promotion = promotion
 
-    async def update_db_price(self, id_product, price):
+    @staticmethod
+    async def update_db_price(id_product, price):
         product = await Product.get(id_product)
         await product.update(price=price).apply()
 
@@ -111,6 +104,32 @@ class UpdateData:
         product = await Product.get(self.id_product)
         await product.update(photo=self.photo).apply()
 
-    async def update_db_quantity(self, id_product, quantity):
+    @staticmethod
+    async def update_db_quantity(id_product, quantity):
         product = await Product.get(id_product)
         await product.update(quantity=quantity).apply()
+
+
+class CustomerCart:
+    def __init__(self, product_id=None, customer_id=None,
+                 photo=None, price=None, quantity=None, ):
+        self.product_id = product_id
+        self.customer_id = customer_id
+        self.photo = photo
+        self.price = price
+        self.quantity = quantity
+
+    @staticmethod
+    async def not_paid_cart(id_customer):
+        not_paid = await Cart.query.where(and_(
+            Cart.customer_id == id_customer,
+            Cart.status_pay == 0)).gino.all()
+        return not_paid
+
+    @staticmethod
+    async def get_photo_order(id_customer):
+        photo_order = await Cart.query.where(and_(
+            Cart.photo == Cart.photo,
+            Cart.customer_id == id_customer)
+        ).gino.all()
+        return photo_order

@@ -3,7 +3,7 @@ from aiogram import Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 
-
+from keyboards.inline.customer_kb import not_paid_kb
 from filters.bot_filter import CheckAdmin
 from db.db_commands import get_item, get_all_photo
 from states.admin_state import GetProduct
@@ -37,6 +37,7 @@ async def find_all_photo(m: Message):
     find_photo = await get_all_photo()
     album = []
     for i in find_photo:
+
         album.append(InputMediaPhoto(i.photo, f"id: {i.id_product}"))
     await m.answer_media_group(media=album)
 

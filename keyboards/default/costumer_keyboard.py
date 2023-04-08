@@ -35,7 +35,7 @@ cart = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text="Оплочені замовлення"),
-            KeyboardButton(text="Неоплочені замовлення")
+            KeyboardButton(text="Ваше замовлення")
         ],
         [
             KeyboardButton(text="Назад"),
