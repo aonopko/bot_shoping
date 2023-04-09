@@ -19,9 +19,11 @@ async def change_order(m: Message):
     get_not_paid = await CustomerCart.not_paid_cart(id_customer=id_customer)
     for i in get_not_paid:
         logger.info(i.photo)
-        await m.answer_photo(i.photo, f"Артикул {i.product_id},\n"
-                                      f"Кількість {i.quantity}",
+        await m.answer_photo(i.photo, f"Артикул: {i.product_id}\n"
+                                      f"Кількість: {i.quantity}шт.\n"
+                                      f"Ціна: {i.price} грн.\n",
                              reply_markup=await not_paid_kb())
+        logger.info(i.price)
 
 
 async def your_order(m: Message):
@@ -32,13 +34,16 @@ async def your_order(m: Message):
     for i in order:
         album.append(InputMediaPhoto(i.photo, f"Артикул: {i.product_id}\n"
                                               f"Кількість: {i.quantity}\n"
-                                              f": "))
-        logger.info(i.photo)
+                                              f"Ціна: {i.price}\n"
+                                              f"Обща вартість: {i.price * i.quantity} грн."))
     await m.answer_media_group(media=album)
+    await m.answer(f"Загальна сума замовлення: {}")
+
+
 def register_basket_hendlers(dp: Dispatcher):
     dp.register_message_handler(basket, text=["Кошик"],
                                 state="*")
     dp.register_message_handler(change_order,
-                                text="Неоплочені замовлення")
+                                text="Змінити замовлення")
     dp.register_message_handler(your_order,
                                 text="Ваше замовлення")

@@ -1,5 +1,5 @@
-from sqlalchemy import Integer, String, Column, DateTime, ForeignKey
-import datetime
+from sqlalchemy import Integer, String, Column, DateTime, ForeignKey, DATETIME
+from datetime import datetime
 
 from db.base import db_gino
 
@@ -43,6 +43,8 @@ class Cart(db_gino.Model):
     __tablename__ = "cart"
     customer_id = Column(Integer, ForeignKey("customers.id_telegram"))
     product_id = Column(Integer, ForeignKey("products.id_product"))
-    photo = Column(String(250))
     quantity = Column(Integer)
     status_pay = Column(Integer, default=0)
+    price = Column(Integer)
+    photo = Column(String(250))
+    created_at = Column(DateTime())

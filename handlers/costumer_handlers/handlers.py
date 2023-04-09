@@ -8,7 +8,7 @@ from asyncpg.exceptions import UniqueViolationError
 from keyboards.default.admin_keyboard import update_product
 from keyboards.default.costumer_keyboard import categories
 from db.db_commands import get_promotion, get_new_product,\
-    add_user, get_item, add_cart
+    add_user, get_item, CustomerCart
 from keyboards.default.costumer_keyboard import main_menu
 from keyboards.inline.customer_kb import buy_button, buy_product
 from states.customers_state import ProductQuantity
@@ -116,8 +116,9 @@ async def enter_quantity(m: Message, state: FSMContext):
         quantity = data.get("quantity")
         item = data.get("item")
         photo = getattr(item, "photo")
-        await add_cart(customer_id, product_id,
-                       photo, quantity)
+        price = getattr(item, "price")
+        await CustomerCart.add_cart(customer_id, product_id,
+                                    photo, quantity, price)
 
         await m.answer("Товар додано у кошик")
         await state.finish()

@@ -18,13 +18,6 @@ async def add_user(**kwargs):
     return user
 
 
-async def add_cart(customer_id, product_id,
-                   photo, quantity):
-    cart = Cart(customer_id=customer_id, product_id=product_id,
-                photo=photo, quantity=quantity).create()
-    await cart
-
-
 async def del_item(id_product):
     item = await Product.get(id_product)
     await item.delete()
@@ -111,13 +104,6 @@ class UpdateData:
 
 
 class CustomerCart:
-    def __init__(self, product_id=None, customer_id=None,
-                 photo=None, price=None, quantity=None, ):
-        self.product_id = product_id
-        self.customer_id = customer_id
-        self.photo = photo
-        self.price = price
-        self.quantity = quantity
 
     @staticmethod
     async def not_paid_cart(id_customer):
@@ -133,3 +119,11 @@ class CustomerCart:
             Cart.customer_id == id_customer)
         ).gino.all()
         return photo_order
+
+    @staticmethod
+    async def add_cart(customer_id, product_id,
+                       photo, quantity, price):
+        cart = Cart(customer_id=customer_id, product_id=product_id,
+                    photo=photo, quantity=quantity,
+                    price=price).create()
+        await cart
