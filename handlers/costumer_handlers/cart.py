@@ -7,7 +7,7 @@ from aiogram import Dispatcher
 
 from keyboards.default.costumer_keyboard import cart
 from db.db_commands import CustomerCart
-from keyboards.inline.customer_kb import not_paid_kb, buy_product
+from keyboards.inline.customer_kb import not_paid_kb, delete_product
 
 
 async def basket(m: Message):
@@ -50,7 +50,10 @@ async def del_item_cart(call: CallbackQuery, callback_data: dict,
     async with state.proxy() as data:
         id_customer = call.from_user.id
         id_item = data["id_product"] = int(callback_data.get("id_product"))
-        logger.info(id_customer, id_item)
+        logger.info(id_item)
+        logger.info(id_customer)
+        await CustomerCart.del_cart_item(product_id=id_item,
+                                         customer_id=id_customer)
         await call.message.answer("OK")
 
 
@@ -61,4 +64,4 @@ def register_basket_hendlers(dp: Dispatcher):
                                 text="Змінити замовлення")
     dp.register_message_handler(your_order,
                                 text="Ваше замовлення")
-    dp.register_callback_query_handler(del_item_cart, buy_product.filter())
+    dp.register_callback_query_handler(del_item_cart, delete_product.filter())

@@ -130,5 +130,7 @@ class CustomerCart:
 
     @staticmethod
     async def del_cart_item(product_id, customer_id):
-        item = await Cart.get(product_id, customer_id)
-        await item.delete()
+        delete_item = await Cart.query.where(
+            Cart.product_id == product_id).where(
+            Cart.customer_id == customer_id).gino.first()
+        await delete_item.delete()
