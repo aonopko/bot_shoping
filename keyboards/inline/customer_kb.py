@@ -13,9 +13,10 @@ async def buy_button(id_product):
     return buy_keyboard
 
 
-async def not_paid_kb():
+async def not_paid_kb(id_product):
+    button = InlineKeyboardButton(text="Видалити товар",
+                                  callback_data=buy_product.new(id_product))
     button1 = InlineKeyboardButton(text="Змінити кількість",
-                                   callback_data="change")
-    pay_button = InlineKeyboardMarkup()
-    pay_button.add(button1)
+                                   callback_data=buy_product.new(id_product))
+    pay_button = InlineKeyboardMarkup().row(button).row(button1)
     return pay_button

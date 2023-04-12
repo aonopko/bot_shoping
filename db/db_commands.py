@@ -127,3 +127,8 @@ class CustomerCart:
                     photo=photo, quantity=quantity,
                     price=price).create()
         await cart
+
+    @staticmethod
+    async def del_cart_item(product_id, customer_id):
+        item = await Cart.get(product_id, customer_id)
+        await item.delete()
