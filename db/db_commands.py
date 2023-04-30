@@ -97,6 +97,7 @@ class UpdateData:
         product = await Product.get(self.id_product)
         await product.update(photo=self.photo).apply()
 
+
     @staticmethod
     async def update_db_quantity(id_product, quantity):
         product = await Product.get(id_product)
