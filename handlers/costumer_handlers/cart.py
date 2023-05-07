@@ -46,7 +46,6 @@ async def your_order(m: Message):
     await m.answer(f"Загальна сума замовлення: {my_sum}")
 
 
-
 async def del_item_cart(call: CallbackQuery, callback_data: dict,
                         state: FSMContext):
     async with state.proxy() as data:

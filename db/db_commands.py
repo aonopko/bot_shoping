@@ -1,7 +1,7 @@
 from operator import and_
 
 from models.db_models import Admins, Product, Customer, Cart
-
+from db.base import db_gino
 
 async def get_admin(user_id):
     admins = await Admins.query.where(Admins.id_telegram == user_id).gino.first()
@@ -108,10 +108,11 @@ class CustomerCart:
 
     @staticmethod
     async def not_paid_cart(id_customer):
-        not_paid = await Cart.query.where(and_(
-            Cart.customer_id == id_customer,
-            Cart.status_pay == 0)).gino.all()
-        return not_paid
+        async with db_gino.transaction():
+            not_paid = await Cart.query.where(and_(
+                Cart.customer_id == id_customer,
+                Cart.status_pay == 0)).gino.first()
+            return not_paid
 
     @staticmethod
     async def get_photo_order(id_customer):
