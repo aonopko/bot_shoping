@@ -58,6 +58,9 @@ async def del_item_cart(call: CallbackQuery, callback_data: dict,
         await call.message.answer("OK")
 
 
+async def cart():
+    pass
+
 def register_basket_hendlers(dp: Dispatcher):
     dp.register_message_handler(basket, text=["Кошик"],
                                 state="*")

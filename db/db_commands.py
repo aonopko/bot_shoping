@@ -3,6 +3,7 @@ from operator import and_
 from models.db_models import Admins, Product, Customer, Cart
 from db.base import db_gino
 
+
 async def get_admin(user_id):
     admins = await Admins.query.where(Admins.id_telegram == user_id).gino.first()
     return admins
