@@ -18,8 +18,7 @@ async def basket(m: Message):
 
 async def change_order(m: Message):
     id_customer = m.from_user.id
-    get_not_paid = await CustomerCart.not_paid_cart(id_customer=id_customer)
-    logger.info(get_not_paid.photo)
+    get_not_paid = await CustomerCart.not_paid_cart(id_customer)
     for i in get_not_paid:
         logger.info(i.photo)
         logger.info(i.product_id)
@@ -32,8 +31,7 @@ async def change_order(m: Message):
 
 async def your_order(m: Message):
     id_customer = m.from_user.id
-    order = await CustomerCart.not_paid_cart(id_customer)
-    logger.info(order)
+    order = await CustomerCart.not_paid_cart(id_customer=id_customer)
     album = []
     logger.info(order)
     my_sum = 0
@@ -59,9 +57,6 @@ async def del_item_cart(call: CallbackQuery, callback_data: dict,
                                          customer_id=id_customer)
         await call.message.answer("OK")
 
-
-async def cart():
-    pass
 
 def register_basket_hendlers(dp: Dispatcher):
     dp.register_message_handler(basket, text=["Кошик"],

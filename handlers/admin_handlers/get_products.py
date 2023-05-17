@@ -2,6 +2,7 @@ from aiogram.types import Message, InputMediaPhoto
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
+from loguru import logger
 
 from keyboards.inline.customer_kb import not_paid_kb
 from filters.bot_filter import CheckAdmin
@@ -35,6 +36,8 @@ async def find_item_id(m: Message, state: FSMContext):
 
 async def find_all_photo(m: Message):
     find_photo = await get_all_photo()
+    logger.info(find_photo)
+
     album = []
     for i in find_photo:
 

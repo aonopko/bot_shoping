@@ -112,7 +112,7 @@ class CustomerCart:
         async with db_gino.transaction():
             not_paid = await Cart.query.where(and_(
                 Cart.customer_id == id_customer,
-                Cart.status_pay == 0)).gino.first()
+                Cart.status_pay == 0)).gino.all()
             return not_paid
 
     @staticmethod
