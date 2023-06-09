@@ -23,6 +23,7 @@ from handlers.costumer_handlers.cart import register_basket_hendlers
 
 
 async def main():
+
     logger.info(f'Bot is loading')
     config: Config = load_config()
     await db_gino.set_bind(f"postgresql://{config.db.user}:{config.db.password}@"
