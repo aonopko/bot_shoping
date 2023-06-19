@@ -31,7 +31,7 @@ async def change_order(m: Message):
 
 async def your_order(m: Message):
     id_customer = m.from_user.id
-    order = await CustomerCart.not_paid_cart(id_customer=id_customer)
+    order = await CustomerCart.not_paid_cart(id_cart=id_customer)
     album = []
     logger.info(order)
     my_sum = 0
@@ -54,7 +54,8 @@ async def del_item_cart(call: CallbackQuery, callback_data: dict,
         logger.info(id_item)
         logger.info(id_customer)
         await CustomerCart.del_cart_item(product_id=id_item,
-                                         customer_id=id_customer)
+                                         id_cart=id_customer)
+        await call.answer()
         await call.message.answer("OK")
 
 

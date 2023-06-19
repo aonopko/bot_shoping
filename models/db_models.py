@@ -41,8 +41,8 @@ class Product(db_gino.Model):
 
 class Cart(db_gino.Model):
     __tablename__ = "cart"
-    customer_id = Column(Integer, ForeignKey("customers.id_telegram"))
-    product_id = Column(Integer, ForeignKey("products.id_product"))
+    id_cart = Column(Integer, primary_key=True)
+    product_id = Column(Integer)
     quantity = Column(Integer)
     status_pay = Column(Integer, default=0)
     price = Column(Integer)

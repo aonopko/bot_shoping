@@ -108,10 +108,10 @@ class UpdateData:
 class CustomerCart:
 
     @staticmethod
-    async def not_paid_cart(id_customer):
+    async def not_paid_cart(id_cart):
         async with db_gino.transaction():
             not_paid = await Cart.query.where(and_(
-                Cart.customer_id == id_customer,
+                Cart.id_cart == id_cart,
                 Cart.status_pay == 0)).gino.all()
             return not_paid
 
@@ -124,16 +124,16 @@ class CustomerCart:
         return photo_order
 
     @staticmethod
-    async def add_cart(customer_id, product_id,
+    async def add_cart(id_cart, product_id,
                        photo, quantity, price):
-        cart = Cart(customer_id=customer_id, product_id=product_id,
+        cart = Cart(id_cart=id_cart, product_id=product_id,
                     photo=photo, quantity=quantity,
                     price=price).create()
         await cart
 
     @staticmethod
-    async def del_cart_item(product_id, customer_id):
+    async def del_cart_item(product_id, id_cart):
         delete_item = await Cart.query.where(
             Cart.product_id == product_id).where(
-            Cart.customer_id == customer_id).gino.first()
+            Cart.id_cart == id_cart).gino.first()
         await delete_item.delete()

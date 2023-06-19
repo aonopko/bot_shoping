@@ -4,6 +4,7 @@ from aiogram.utils.callback_data import CallbackData
 
 buy_product = CallbackData("buy", "id_product")
 delete_product = CallbackData("del", "id_product")
+update_product = CallbackData("update", "id_product")
 
 
 async def buy_button(id_product):
@@ -15,13 +16,9 @@ async def buy_button(id_product):
 
 
 async def not_paid_kb(id_product):
-    button = InlineKeyboardButton(text="Видалити товар",
+    button = InlineKeyboardButton(text="Видалити",
                                   callback_data=delete_product.new(id_product))
-    button2 = InlineKeyboardButton(text="1", callback_data="2")
-    button3 = InlineKeyboardButton(text="2", callback_data="3")
-    button4 = InlineKeyboardButton(text="3", callback_data="4")
-    button5 = InlineKeyboardButton(text="4", callback_data="5")
     button1 = InlineKeyboardButton(text="Змінити кількість",
                                    callback_data=buy_product.new(id_product))
-    pay_button = InlineKeyboardMarkup(row_width=5).row(button, button2).row(button3).row(button4, button5).row(button1)
+    pay_button = InlineKeyboardMarkup(row_width=5).row(button).row(button1)
     return pay_button
